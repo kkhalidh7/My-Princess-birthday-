@@ -12,33 +12,71 @@
             text-align: center;
             padding: 20px;
             margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
         .container {
             max-width: 600px;
-            margin: auto;
+            width: 100%;
             background: #1f2833;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             border: 1px solid #66fcf1;
-        }
-        h1 {
-            color: #66fcf1;
-            font-size: 2.2em;
-            margin-bottom: 20px;
+            transition: all 0.8s ease-in-out;
         }
         .photo-frame {
             width: 100%;
-            max-height: 400px;
+            max-height: 450px;
             overflow: hidden;
             border-radius: 10px;
-            margin-bottom: 25px;
             border: 2px solid #66fcf1;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .photo-frame:hover {
+            transform: scale(1.01);
         }
         img {
             width: 100%;
             height: auto;
             display: block;
+        }
+        .reveal-btn {
+            background-color: #66fcf1;
+            color: #0b0c10;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.1em;
+            font-family: 'Georgia', serif;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(102, 252, 241, 0.3);
+            transition: background 0.3s;
+        }
+        .reveal-btn:hover {
+            background-color: #45a29e;
+        }
+        .message-content {
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+            text-align: left;
+            margin-top: 25px;
+        }
+        .message-content.show {
+            display: block;
+            opacity: 1;
+        }
+        h1 {
+            color: #66fcf1;
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 20px;
         }
         p {
             font-size: 1.1em;
@@ -49,29 +87,44 @@
         .highlight {
             color: #66fcf1;
             font-style: italic;
+            text-align: center;
         }
-    </p>
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>To My Beloved Enuye</h1>
-        
-        <div class="photo-frame">
+    <div class="container" id="cardContainer">
+        <div class="photo-frame" onclick="revealMessage()">
             <img src="1784745890077.png" alt="Enuye">
         </div>
+        
+        <button class="reveal-btn" id="revealBtn" onclick="revealMessage()">Tap to Open My Heart ✨</button>
 
-        <p>My dearest Enuye,</p>
-        
-        <p>On your special day, my heart overflows with a love that distance can never diminish. Even when miles lie between us, you are the very first thought in my mind and the deepest peace in my soul.</p>
-        
-        <p>For almost two years, you have been my sanctuary, my guiding light, and the absolute greatest blessing of my life. Every single moment with you feels like magic.</p>
-        
-        <p class="highlight">"If my heart could speak out loud every beat would whisper your name, Enuye. Thank you for existing, for loving me, and for being my forever."</p>
+        <div class="message-content" id="messageContent">
+            <h1>To My Beloved Enuye</h1>
+            
+            <p>My dearest Enuye,</p>
+            
+            <p>On your special day, my heart overflows with a love that distance can never diminish. Even when miles lie between us, you are the very first thought in my mind and the deepest peace in my soul.</p>
+            
+            <p>For almost two years, you have been my sanctuary, my guiding light, and the absolute greatest blessing of my life. Every single moment with you feels like magic.</p>
+            
+            <p class="highlight">"If my heart could speak out loud, every beat would whisper your name, Enuye. Thank you for existing, for loving me, and for being my forever."</p>
 
-        <p>Happy Birthday, my princess. I love you more than words could ever explain.</p>
+            <p style="text-align: center; margin-top: 30px;">Happy Birthday, my princess. I love you more than words could ever explain.</p>
+        </div>
     </div>
+
+    <script>
+        function revealMessage() {
+            const message = document.getElementById('messageContent');
+            const btn = document.getElementById('revealBtn');
+            
+            message.classList.add('show');
+            btn.style.display = 'none';
+        }
+    </script>
 
 </body>
 </html>
+
