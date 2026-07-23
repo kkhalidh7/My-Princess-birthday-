@@ -16,16 +16,52 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
         }
+
+        /* Floating Hearts Animation Background */
+        .hearts-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .heart {
+            position: absolute;
+            bottom: -20px;
+            color: rgba(102, 252, 241, 0.2);
+            font-size: 20px;
+            animation: floatUp 6s linear infinite;
+        }
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+
         .container {
+            position: relative;
+            z-index: 2;
             max-width: 600px;
             width: 100%;
             background: #1f2833;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
             border: 1px solid #66fcf1;
-            transition: all 0.8s ease-in-out;
         }
         .photo-frame {
             width: 100%;
@@ -55,16 +91,17 @@
             border-radius: 25px;
             cursor: pointer;
             margin-top: 20px;
-            box-shadow: 0 4px 10px rgba(102, 252, 241, 0.3);
-            transition: background 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 252, 241, 0.4);
+            transition: all 0.3s;
         }
         .reveal-btn:hover {
             background-color: #45a29e;
+            transform: scale(1.05);
         }
         .message-content {
             display: none;
             opacity: 0;
-            transition: opacity 1s ease-in;
+            transition: opacity 1.2s ease-in;
             text-align: left;
             margin-top: 25px;
         }
@@ -93,6 +130,9 @@
 </head>
 <body>
 
+    <!-- Floating Background Hearts -->
+    <div class="hearts-bg" id="heartsBg"></div>
+
     <div class="container" id="cardContainer">
         <div class="photo-frame" onclick="revealMessage()">
             <img src="1784745890077.png" alt="Enuye">
@@ -103,19 +143,31 @@
         <div class="message-content" id="messageContent">
             <h1>To My Beloved Enuye</h1>
             
-            <p>My dearest Enuye,</p>
+            <p>Enuye wellahi I'd know kmn edmjmer but i know on the end ill say i love you esu beca adlm gn i wish ke gonesh hongne be gift surprise eyarkush like how you make me happy every single day when i talk to you i promise you gn enu insallah ill makes those day become real enuye i love you for rest of my life</p>
             
-            <p>On your special day, my heart overflows with a love that distance can never diminish. Even when miles lie between us, you are the very first thought in my mind and the deepest peace in my soul.</p>
-            
-            <p>For almost two years, you have been my sanctuary, my guiding light, and the absolute greatest blessing of my life. Every single moment with you feels like magic.</p>
-            
-            <p class="highlight">"If my heart could speak out loud, every beat would whisper your name, Enuye. Thank you for existing, for loving me, and for being my forever."</p>
+            <p class="highlight">"Every single day you make me happy beyond words, and I promise you, Inshallah, I will make all those real-life surprises happen for you."</p>
 
-            <p style="text-align: center; margin-top: 30px;">Happy Birthday, my princess. I love you more than words could ever explain.</p>
+            <p style="text-align: center; margin-top: 30px;">Happy Birthday, my princess. I love you for the rest of my life. ❤️</p>
         </div>
     </div>
 
     <script>
+        // Generate floating hearts effect
+        function createHeart() {
+            const heartsBg = document.getElementById('heartsBg');
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            heartsBg.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }
+        setInterval(createHeart, 400);
+
         function revealMessage() {
             const message = document.getElementById('messageContent');
             const btn = document.getElementById('revealBtn');
@@ -127,4 +179,3 @@
 
 </body>
 </html>
-
