@@ -5,12 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To My Beloved Enuye</title>
     <style>
-        /* 1. CUTE & SOFT BACKGROUND */
+        /* PERFECT MATCH ROMANTIC BACKGROUND */
         body {
-            /* Soft gradient background */
-            background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%);
+            background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
             background-attachment: fixed;
-            color: #5c4033; /* Dark brown for text readability */
+            color: #5c4033;
             font-family: 'Georgia', serif;
             text-align: center;
             padding: 20px;
@@ -23,7 +22,7 @@
             position: relative;
         }
 
-        /* 2. FALLING PINK PETALS ANIMATION */
+        /* FALLING PINK PETALS ANIMATION */
         .petal-bg {
             position: absolute;
             top: 0;
@@ -36,10 +35,9 @@
         }
         .petal {
             position: absolute;
-            background-color: #ffb7c5; /* Cute pink color */
-            /* Make them look like petals */
+            background-color: #ff85a1;
             border-radius: 15px 0 15px 0; 
-            opacity: 0.7;
+            opacity: 0.6;
             animation: fall linear infinite;
         }
         @keyframes fall {
@@ -47,34 +45,33 @@
             100% { transform: translateY(100vh) rotate(360deg); }
         }
 
-        /* Main Container - updated with softer look */
+        /* Main Container */
         .container {
             position: relative;
             z-index: 2;
             max-width: 600px;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
+            background: rgba(255, 255, 255, 0.92);
             padding: 30px;
             border-radius: 20px;
-            /* Soft shadow instead of harsh border */
-            box-shadow: 0 10px 30px rgba(92, 64, 51, 0.15);
-            border: 1px solid #ffccd5;
+            box-shadow: 0 10px 30px rgba(186, 104, 128, 0.2);
+            border: 1px solid #ffb3c6;
             transition: transform 0.5s ease-in-out;
         }
 
-        /* The Giant Floating Heart Animation (kept pink) */
+        /* Giant Floating Heart Animation */
         .floating-heart-cake {
             position: absolute;
             left: 50%;
             bottom: -150px;
             transform: translateX(-50%);
             font-size: 150px;
-            color: #ff66b2; /* Deep pink */
+            color: #ff3366;
             z-index: 10;
             opacity: 0;
             pointer-events: none;
             animation: floatCake 4s ease-out forwards;
-            text-shadow: 0 0 20px rgba(255, 102, 178, 0.5);
+            text-shadow: 0 0 25px rgba(255, 51, 102, 0.4);
         }
 
         @keyframes floatCake {
@@ -87,16 +84,16 @@
             transform: translateY(-15%);
         }
 
-        /* Photo Frame - updated border color */
+        /* Photo Frame */
         .photo-frame {
             width: 100%;
             max-height: 450px;
             overflow: hidden;
             border-radius: 15px;
-            border: 4px solid #ffb7c5; /* Pink border */
+            border: 4px solid #ff85a1;
             cursor: pointer;
             transition: transform 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
         }
         .photo-frame:hover {
             transform: scale(1.02);
@@ -107,9 +104,9 @@
             display: block;
         }
 
-        /* Reveal Button - updated to pink */
+        /* Reveal Button */
         .reveal-btn {
-            background: linear-gradient(45deg, #ff66b2, #ff99cc);
+            background: linear-gradient(45deg, #ff3366, #ff6685);
             color: white;
             border: none;
             padding: 15px 30px;
@@ -119,11 +116,11 @@
             border-radius: 30px;
             cursor: pointer;
             margin-top: 25px;
-            box-shadow: 0 4px 15px rgba(255, 102, 178, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
             transition: all 0.3s;
         }
         .reveal-btn:hover {
-            background: linear-gradient(45deg, #ff3385, #ff66b2);
+            background: linear-gradient(45deg, #e60039, #ff3366);
             transform: scale(1.05);
         }
 
@@ -142,36 +139,31 @@
             opacity: 1;
         }
         h1 {
-            color: #ff3385; /* Darker pink for title */
-            font-size: 2.5em;
+            color: #d90429;
+            font-size: 2.3em;
             text-align: center;
             margin-bottom: 20px;
-            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
         }
         p {
-            font-size: 1.2em;
+            font-size: 1.15em;
             line-height: 1.8;
-            color: #5c4033;
+            color: #4a3b32;
             margin-bottom: 15px;
         }
         /* Old Arabic style text */
         .old-arabic-style {
             font-style: italic;
-            color: #8c6b59;
-            border-left: 4px solid #ffb7c5; /* Pink accent */
+            color: #8c5864;
+            border-left: 4px solid #ff3366;
             padding-left: 15px;
             margin-bottom: 25px;
-            font-size: 1.3em;
-        }
-        .highlight {
-            color: #ff3385;
-            font-weight: bold;
+            font-size: 1.25em;
         }
     </style>
 </head>
 <body>
 
-    <!-- 2. Falling Petals Background -->
+    <!-- Falling Petals Background -->
     <div class="petal-bg" id="petalBg"></div>
 
     <!-- The Giant Floating Heart Animation -->
@@ -179,11 +171,10 @@
 
     <div class="container" id="cardContainer">
         <div class="photo-frame" onclick="revealMessage()">
-            <!-- YOUR PHOTO HERE -->
             <img src="1784745890077.png" alt="Enuye">
         </div>
         
-        <button class="reveal-btn" id="revealBtn" onclick="revealMessage()">Tap to Open My Heart Enuye Enuye ✨</button>
+        <button class="reveal-btn" id="revealBtn" onclick="revealMessage()">Tap to Open My Heart Enuye ✨</button>
 
         <div class="message-content" id="messageContent">
             <h1>To My Beloved Enuye</h1>
@@ -192,42 +183,35 @@
                 "In the garden of my life, you are the rarest bloom that ever graced my soul. Before you, my world was silent; with you, every beat of my heart is a celebration of your existence."
             </div>
 
-            <p>Enuye wellahi I'd know kmn edmjmer but i know on the end ill say i love you esu beca adlm gn i wish ke gonesh hongne be gift surprise eyarkush like how you make me happy every single day when i talk to you i promise you gn enu insallah ill makes those day become real enuye i love you for rest of my life</p>
+            <p>Truly wish we were close right now, so I could shower you with surprise gifts—to give back even a fraction of the happiness you bring me every single day just by talking to me. I promise you, Enu, inshallah, the day will come when all of these quiet wishes become our reality.</p>
             
-            <p style="text-align: center; font-weight: bold; color: #ff3385; margin-top: 30px;">Happy Birthday, Enuye. I love you forever. ❤️</p>
+            <p>I love you, for the rest of my life.</p>
+            
+            <p style="text-align: center; font-weight: bold; color: #d90429; margin-top: 30px;">Happy Birthday, Enuye. ❤️</p>
         </div>
     </div>
 
     <script>
-        // 2. Generate falling petals
+        // Generate falling petals
         function createPetal() {
             const petalBg = document.getElementById('petalBg');
             const petal = document.createElement('div');
             petal.classList.add('petal');
             
-            // Random size between 10px and 20px
             const size = Math.random() * 10 + 10;
             petal.style.width = size + 'px';
             petal.style.height = size * 0.8 + 'px';
-            
-            // Random horizontal position
             petal.style.left = Math.random() * 100 + 'vw';
-            
-            // Random animation speed (between 4 and 7 seconds)
             petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            
-            // Random opacity
-            petal.style.opacity = Math.random() * 0.5 + 0.2;
+            petal.style.opacity = Math.random() * 0.5 + 0.3;
             
             petalBg.appendChild(petal);
 
-            // Remove petal after it finishes falling
             setTimeout(() => {
                 petal.remove();
             }, 7000);
         }
 
-        // Create petals periodically
         setInterval(createPetal, 300);
 
         function revealMessage() {
