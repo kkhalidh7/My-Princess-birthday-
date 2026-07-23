@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To My Beloved Enuye</title>
     <style>
+        /* 1. CUTE & SOFT BACKGROUND */
         body {
-            background-color: #0b0c10;
-            color: #c5c6c7;
+            /* Soft gradient background */
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%);
+            background-attachment: fixed;
+            color: #5c4033; /* Dark brown for text readability */
             font-family: 'Georgia', serif;
             text-align: center;
             padding: 20px;
@@ -20,8 +23,8 @@
             position: relative;
         }
 
-        /* Floating Hearts Animation Background */
-        .hearts-bg {
+        /* 2. FALLING PINK PETALS ANIMATION */
+        .petal-bg {
             position: absolute;
             top: 0;
             left: 0;
@@ -31,149 +34,218 @@
             z-index: 1;
             pointer-events: none;
         }
-        .heart {
+        .petal {
             position: absolute;
-            bottom: -20px;
-            color: rgba(102, 252, 241, 0.2);
-            font-size: 20px;
-            animation: floatUp 6s linear infinite;
+            background-color: #ffb7c5; /* Cute pink color */
+            /* Make them look like petals */
+            border-radius: 15px 0 15px 0; 
+            opacity: 0.7;
+            animation: fall linear infinite;
         }
-        @keyframes floatUp {
-            0% {
-                transform: translateY(0) scale(0.8);
-                opacity: 0;
-            }
-            50% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1.2);
-                opacity: 0;
-            }
+        @keyframes fall {
+            0% { transform: translateY(-50px) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
         }
 
+        /* Main Container - updated with softer look */
         .container {
             position: relative;
             z-index: 2;
             max-width: 600px;
             width: 100%;
-            background: #1f2833;
+            background: rgba(255, 255, 255, 0.95); /* Semi-transparent white */
             padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-            border: 1px solid #66fcf1;
+            border-radius: 20px;
+            /* Soft shadow instead of harsh border */
+            box-shadow: 0 10px 30px rgba(92, 64, 51, 0.15);
+            border: 1px solid #ffccd5;
+            transition: transform 0.5s ease-in-out;
         }
+
+        /* The Giant Floating Heart Animation (kept pink) */
+        .floating-heart-cake {
+            position: absolute;
+            left: 50%;
+            bottom: -150px;
+            transform: translateX(-50%);
+            font-size: 150px;
+            color: #ff66b2; /* Deep pink */
+            z-index: 10;
+            opacity: 0;
+            pointer-events: none;
+            animation: floatCake 4s ease-out forwards;
+            text-shadow: 0 0 20px rgba(255, 102, 178, 0.5);
+        }
+
+        @keyframes floatCake {
+            0% { bottom: -150px; opacity: 0; }
+            10% { opacity: 1; }
+            100% { bottom: 40%; opacity: 0; }
+        }
+
+        .container.move-up {
+            transform: translateY(-15%);
+        }
+
+        /* Photo Frame - updated border color */
         .photo-frame {
             width: 100%;
             max-height: 450px;
             overflow: hidden;
-            border-radius: 10px;
-            border: 2px solid #66fcf1;
+            border-radius: 15px;
+            border: 4px solid #ffb7c5; /* Pink border */
             cursor: pointer;
             transition: transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         .photo-frame:hover {
-            transform: scale(1.01);
+            transform: scale(1.02);
         }
         img {
             width: 100%;
             height: auto;
             display: block;
         }
+
+        /* Reveal Button - updated to pink */
         .reveal-btn {
-            background-color: #66fcf1;
-            color: #0b0c10;
+            background: linear-gradient(45deg, #ff66b2, #ff99cc);
+            color: white;
             border: none;
-            padding: 12px 25px;
-            font-size: 1.1em;
+            padding: 15px 30px;
+            font-size: 1.2em;
             font-family: 'Georgia', serif;
             font-weight: bold;
-            border-radius: 25px;
+            border-radius: 30px;
             cursor: pointer;
-            margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(102, 252, 241, 0.4);
+            margin-top: 25px;
+            box-shadow: 0 4px 15px rgba(255, 102, 178, 0.3);
             transition: all 0.3s;
         }
         .reveal-btn:hover {
-            background-color: #45a29e;
+            background: linear-gradient(45deg, #ff3385, #ff66b2);
             transform: scale(1.05);
         }
+
+        /* Message Content */
         .message-content {
             display: none;
             opacity: 0;
-            transition: opacity 1.2s ease-in;
+            transition: opacity 2s ease-in;
             text-align: left;
-            margin-top: 25px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 5;
         }
         .message-content.show {
             display: block;
             opacity: 1;
         }
         h1 {
-            color: #66fcf1;
-            font-size: 2em;
+            color: #ff3385; /* Darker pink for title */
+            font-size: 2.5em;
             text-align: center;
             margin-bottom: 20px;
+            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
         }
         p {
-            font-size: 1.1em;
+            font-size: 1.2em;
             line-height: 1.8;
-            color: #ffffff;
-            margin-bottom: 20px;
+            color: #5c4033;
+            margin-bottom: 15px;
+        }
+        /* Old Arabic style text */
+        .old-arabic-style {
+            font-style: italic;
+            color: #8c6b59;
+            border-left: 4px solid #ffb7c5; /* Pink accent */
+            padding-left: 15px;
+            margin-bottom: 25px;
+            font-size: 1.3em;
         }
         .highlight {
-            color: #66fcf1;
-            font-style: italic;
-            text-align: center;
+            color: #ff3385;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <!-- Floating Background Hearts -->
-    <div class="hearts-bg" id="heartsBg"></div>
+    <!-- 2. Falling Petals Background -->
+    <div class="petal-bg" id="petalBg"></div>
+
+    <!-- The Giant Floating Heart Animation -->
+    <div class="floating-heart-cake" id="floatingHeart">❤️</div>
 
     <div class="container" id="cardContainer">
         <div class="photo-frame" onclick="revealMessage()">
+            <!-- YOUR PHOTO HERE -->
             <img src="1784745890077.png" alt="Enuye">
         </div>
         
-        <button class="reveal-btn" id="revealBtn" onclick="revealMessage()">Tap to Open My Heart ✨</button>
+        <button class="reveal-btn" id="revealBtn" onclick="revealMessage()">Tap to Open My Heart Enuye Enuye ✨</button>
 
         <div class="message-content" id="messageContent">
             <h1>To My Beloved Enuye</h1>
             
+            <div class="old-arabic-style">
+                "In the garden of my life, you are the rarest bloom that ever graced my soul. Before you, my world was silent; with you, every beat of my heart is a celebration of your existence."
+            </div>
+
             <p>Enuye wellahi I'd know kmn edmjmer but i know on the end ill say i love you esu beca adlm gn i wish ke gonesh hongne be gift surprise eyarkush like how you make me happy every single day when i talk to you i promise you gn enu insallah ill makes those day become real enuye i love you for rest of my life</p>
             
-            <p class="highlight">"Every single day you make me happy beyond words, and I promise you, Inshallah, I will make all those real-life surprises happen for you."</p>
-
-            <p style="text-align: center; margin-top: 30px;">Happy Birthday, my princess. I love you for the rest of my life. ❤️</p>
+            <p style="text-align: center; font-weight: bold; color: #ff3385; margin-top: 30px;">Happy Birthday, Enuye. I love you forever. ❤️</p>
         </div>
     </div>
 
     <script>
-        // Generate floating hearts effect
-        function createHeart() {
-            const heartsBg = document.getElementById('heartsBg');
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            heartsBg.appendChild(heart);
+        // 2. Generate falling petals
+        function createPetal() {
+            const petalBg = document.getElementById('petalBg');
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            
+            // Random size between 10px and 20px
+            const size = Math.random() * 10 + 10;
+            petal.style.width = size + 'px';
+            petal.style.height = size * 0.8 + 'px';
+            
+            // Random horizontal position
+            petal.style.left = Math.random() * 100 + 'vw';
+            
+            // Random animation speed (between 4 and 7 seconds)
+            petal.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            
+            // Random opacity
+            petal.style.opacity = Math.random() * 0.5 + 0.2;
+            
+            petalBg.appendChild(petal);
 
+            // Remove petal after it finishes falling
             setTimeout(() => {
-                heart.remove();
-            }, 6000);
+                petal.remove();
+            }, 7000);
         }
-        setInterval(createHeart, 400);
+
+        // Create petals periodically
+        setInterval(createPetal, 300);
 
         function revealMessage() {
+            const container = document.getElementById('cardContainer');
             const message = document.getElementById('messageContent');
             const btn = document.getElementById('revealBtn');
+            const floatingHeart = document.getElementById('floatingHeart');
             
-            message.classList.add('show');
+            container.classList.add('move-up');
+            
+            floatingHeart.style.animation = 'none'; 
+            void floatingHeart.offsetWidth; 
+            floatingHeart.style.animation = null; 
+
             btn.style.display = 'none';
+            setTimeout(() => {
+                message.classList.add('show');
+            }, 800);
         }
     </script>
 
