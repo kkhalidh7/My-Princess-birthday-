@@ -39,17 +39,9 @@
             animation: floatUp 6s linear infinite;
         }
         @keyframes floatUp {
-            0% {
-                transform: translateY(0) scale(0.8);
-                opacity: 0;
-            }
-            50% {
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(-100vh) scale(1.2);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) scale(0.8); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
         }
 
         .container {
@@ -90,6 +82,7 @@
             transform: translateY(-15%);
         }
 
+        /* Photo Frame & Cake Cutting Animation */
         .photo-frame {
             width: 100%;
             max-height: 450px;
@@ -98,6 +91,7 @@
             border: 2px solid #66fcf1;
             cursor: pointer;
             transition: transform 0.3s ease;
+            position: relative;
         }
         .photo-frame:hover {
             transform: scale(1.01);
@@ -106,7 +100,79 @@
             width: 100%;
             height: auto;
             display: block;
+            transition: filter 0.5s ease;
         }
+
+        /* Cake cutting wiggle effect when it's her birthday */
+        .cutting-cake img {
+            animation: cutCakeAnim 1.5s infinite ease-in-out;
+        }
+        @keyframes cutCakeAnim {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.03) rotate(-1deg); }
+            50% { transform: scale(1.05) rotate(0deg); filter: brightness(1.2); }
+            75% { transform: scale(1.03) rotate(1deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        /* HEART SHAPE COUNTDOWN BOX */
+        .heart-countdown {
+            margin: 20px auto;
+            width: 220px;
+            height: 200px;
+            background: linear-gradient(135deg, #1f2833, #0b0c10);
+            position: relative;
+            transform: rotate(-45deg);
+            border: 2px solid #66fcf1;
+            box-shadow: 0 0 15px rgba(102, 252, 241, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .heart-countdown::before,
+        .heart-countdown::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 200px;
+            background: inherit;
+            border-radius: 50%;
+            border: 2px solid #66fcf1;
+        }
+        .heart-countdown::before {
+            top: -110px;
+            left: 0;
+            border-bottom: none;
+            border-right: none;
+        }
+        .heart-countdown::after {
+            left: 110px;
+            top: 0;
+            border-bottom: none;
+            border-left: none;
+        }
+        /* Counter Text inside the heart (rotated back upright) */
+        .countdown-inner {
+            position: absolute;
+            transform: rotate(45deg);
+            z-index: 5;
+            text-align: center;
+            width: 100px;
+        }
+        .countdown-title {
+            font-size: 0.8em;
+            color: #66fcf1;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        #timerDisplay {
+            font-size: 1em;
+            font-weight: bold;
+            color: #ffffff;
+            line-height: 1.4;
+        }
+
         .reveal-btn {
             background-color: #66fcf1;
             color: #0b0c10;
@@ -158,6 +224,14 @@
             margin-bottom: 25px;
             font-size: 1.2em;
         }
+        .signature {
+            text-align: center;
+            color: #66fcf1;
+            font-style: italic;
+            font-size: 1.2em;
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
     </style>
 </head>
 <body>
@@ -169,10 +243,19 @@
     <div class="floating-heart-cake" id="floatingHeart">❤️</div>
 
     <div class="container" id="cardContainer">
-        <div class="photo-frame" onclick="revealMessage()">
+        <!-- Photo Frame with dynamic cake cutting check -->
+        <div class="photo-frame" id="photoFrame" onclick="revealMessage()">
             <img src="1784745890077.png" alt="Enuye">
         </div>
         
+        <!-- Heart-Shaped Countdown -->
+        <div class="heart-countdown">
+            <div class="countdown-inner">
+                <div class="countdown-title" id="countdownTitle">Next Birthday</div>
+                <div id="timerDisplay">Loading...</div>
+            </div>
+        </div>
+
         <button class="reveal-btn" id="revealBtn" onclick="revealMessage()">Tap to Open My Heart ✨</button>
 
         <div class="message-content" id="messageContent">
@@ -184,9 +267,11 @@
 
             <p>Happy birthday enu to the gurl who hold my entire heart everyday with you feels like a special gift zare gn it's more special bc its ur special day.</p>
             
-            <p>Bzi ldtesh wish we were close right now so I could shower you with surprise gifts to give back even a fraction of the happiness you bring me every single day just by talking to me i promise you enu like inshallah the day will come when all of these quiet wishes become our reality</p>
+            <p>I truly wish we were close right now so I could shower you with surprise gifts to give back even a fraction of the happiness you bring me every single day just by talking to me I promise you enu inshallah like the day will come when all of these quiet wishes become our reality.</p>
             
-            <p style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 30px;">I love you for the rest of my life ♥️♥️♥️😘</p>
+            <p style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you for the rest of my life ♥️♥️♥️😘</p>
+            
+            <div class="signature">— From by your man, Khalid</div>
         </div>
     </div>
 
@@ -206,6 +291,42 @@
             }, 6000);
         }
         setInterval(createHeart, 400);
+
+        // LIVE COUNTDOWN TO JULY 22
+        function updateCountdown() {
+            const now = new Date();
+            let year = now.getFullYear();
+            let birthday = new Date(year, 6, 22); // Month 6 is July (0-indexed)
+
+            // If July 22 has passed this year, target next year
+            if (now > birthday) {
+                birthday = new Date(year + 1, 6, 22);
+            }
+
+            const diff = birthday - now;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+
+            const timerDisplay = document.getElementById('timerDisplay');
+            const countdownTitle = document.getElementById('countdownTitle');
+            const photoFrame = document.getElementById('photoFrame');
+
+            // Check if today IS July 22
+            if (now.getMonth() === 6 && now.getDate() === 22) {
+                countdownTitle.innerHTML = "IT'S TODAY!";
+                timerDisplay.innerHTML = "🥳🎂🎉";
+                photoFrame.classList.add('cutting-cake'); // Triggers the cake cutting animation!
+            } else {
+                countdownTitle.innerHTML = "Until July 22";
+                timerDisplay.innerHTML = `${days}d ${hours}h ${minutes}m`;
+                photoFrame.classList.remove('cutting-cake');
+            }
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
 
         function revealMessage() {
             const container = document.getElementById('cardContainer');
