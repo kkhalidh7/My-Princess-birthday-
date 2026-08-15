@@ -114,19 +114,6 @@
             100% { transform: scale(1) rotate(0deg); }
         }
 
-        /* Aysel Nickname Badge */
-        .nickname-badge {
-            display: inline-block;
-            background: rgba(102, 252, 241, 0.1);
-            color: #66fcf1;
-            border: 1px dashed #66fcf1;
-            padding: 6px 15px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            margin-top: 15px;
-            letter-spacing: 1px;
-        }
-
         /* HEART SHAPE COUNTDOWN BOX */
         .heart-countdown {
             margin: 20px auto;
@@ -235,52 +222,12 @@
             margin-bottom: 25px;
             font-size: 1.2em;
         }
-
-        /* Interactive Reasons / Counter Box */
-        .reasons-box {
-            background: rgba(11, 12, 16, 0.6);
-            border: 1px solid #45a29e;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 25px;
-            text-align: center;
-        }
-        .reasons-title {
-            color: #66fcf1;
-            font-size: 1.1em;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        #reasonText {
-            font-style: italic;
-            color: #ffffff;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-        }
-        .next-reason-btn {
-            background: transparent;
-            color: #66fcf1;
-            border: 1px solid #66fcf1;
-            padding: 8px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: 'Georgia', serif;
-            transition: all 0.3s;
-        }
-        .next-reason-btn:hover {
-            background: #66fcf1;
-            color: #0b0c10;
-        }
-
         .signature {
             text-align: center;
             color: #66fcf1;
             font-style: italic;
             font-size: 1.2em;
-            margin-top: 25px;
+            margin-top: 20px;
             letter-spacing: 1px;
         }
     </style>
@@ -294,13 +241,10 @@
     <div class="floating-heart-cake" id="floatingHeart">❤️</div>
 
     <div class="container" id="cardContainer">
-        <!-- Photo Frame -->
+        <!-- Photo Frame with dynamic cake cutting check -->
         <div class="photo-frame" id="photoFrame" onclick="revealMessage()">
             <img src="1784745890077.png" alt="Enuye">
         </div>
-
-        <!-- Aysel Nickname Badge -->
-        <div class="nickname-badge">✨ My Aysel ✨</div>
         
         <!-- Heart-Shaped Countdown -->
         <div class="heart-countdown">
@@ -323,13 +267,6 @@
             
             <p>I truly wish we were close right now so I could shower you with surprise gifts to give back even a fraction of the happiness you bring me every single day just by talking to me I promise you enu inshallah like the day will come when all of these quiet wishes become our reality.</p>
             
-            <!-- Interactive Reasons / Counter Box -->
-            <div class="reasons-box">
-                <div class="reasons-title">Tap to Read My Heart ❤️</div>
-                <div id="reasonText">"Enuye wellahi there's nothing more beautiful than memories..."</div>
-                <button class="next-reason-btn" onclick="nextReason()">Tap for Next Reason ✨</button>
-            </div>
-
             <p style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you for the rest of my life ♥️♥️♥️😘</p>
             
             <div class="signature">— From by your man, Khalid</div>
@@ -337,19 +274,6 @@
     </div>
 
     <script>
-        // Array of your exact special reasons/words
-        const reasons = [
-            "\"Enuye wellahi there's nothing more beautiful than memories...\"",
-            "\"...ena yk what makes them even more beautiful is having memories with you.\"",
-            "\"Ena lbe lay yalesh yalesh bota wellahi that no one else could ever have not even myself.\""
-        ];
-        let currentReasonIndex = 0;
-
-        function nextReason() {
-            currentReasonIndex = (currentReasonIndex + 1) % reasons.length;
-            document.getElementById('reasonText').innerHTML = reasons[currentReasonIndex];
-        }
-
         // Generate floating background hearts
         function createHeart() {
             const heartsBg = document.getElementById('heartsBg');
@@ -370,13 +294,15 @@
         function updateCountdown() {
             const now = new Date();
             let year = now.getFullYear();
-            let birthday = new Date(year, 6, 22);
+            let birthday = new Date(year, 6, 22); // Month 6 is July (0-indexed)
 
+            // If July 22 has passed this year, target next year
             if (now > birthday) {
                 birthday = new Date(year + 1, 6, 22);
             }
 
             const diff = birthday - now;
+
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
             const minutes = Math.floor((diff / 1000 / 60) % 60);
@@ -385,10 +311,11 @@
             const countdownTitle = document.getElementById('countdownTitle');
             const photoFrame = document.getElementById('photoFrame');
 
+            // Check if today IS July 22
             if (now.getMonth() === 6 && now.getDate() === 22) {
                 countdownTitle.innerHTML = "IT'S TODAY!";
                 timerDisplay.innerHTML = "🥳🎂🎉";
-                photoFrame.classList.add('cutting-cake');
+                photoFrame.classList.add('cutting-cake'); // Triggers the cake cutting animation!
             } else {
                 countdownTitle.innerHTML = "Until July 22";
                 timerDisplay.innerHTML = `${days}d ${hours}h ${minutes}m`;
