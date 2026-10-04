@@ -112,20 +112,36 @@
             100% { transform: scale(1) rotate(0deg); }
         }
 
-        /* PUZZLE SECTION STYLES */
+        /* PUZZLE SECTION STYLES WITH SMOOTH FADE OUT */
         .puzzle-section {
             margin-top: 20px;
             background: rgba(11, 12, 16, 0.5);
             border: 1px dashed #66fcf1;
             padding: 15px;
             border-radius: 10px;
+            transition: opacity 3s ease, border-color 3s ease, background 3s ease, max-height 1s ease, padding 1s ease, margin 1s ease;
+            max-height: 400px;
+            opacity: 1;
+            overflow: hidden;
         }
+        .puzzle-section.fade-out {
+            opacity: 0;
+            border-color: transparent;
+            background: rgba(11, 12, 16, 0);
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-top: 0;
+            pointer-events: none;
+        }
+
         .puzzle-title {
             color: #66fcf1;
             font-size: 0.95em;
             margin-bottom: 10px;
             letter-spacing: 0.5px;
             font-style: italic;
+            transition: opacity 2s ease;
         }
         .puzzle-board {
             display: grid;
@@ -138,6 +154,7 @@
             border: 2px solid #66fcf1;
             border-radius: 6px;
             background: #0b0c10;
+            transition: opacity 3s ease;
         }
         .puzzle-tile {
             background-size: 240px 240px;
@@ -186,7 +203,6 @@
             color: #0b0c10;
         }
 
-        /* Fully Visible, Highlighted Win Message Card */
         #puzzleMessage {
             font-size: 1.05em;
             color: #ff4081;
@@ -288,10 +304,10 @@
             background-color: #45a29e;
             transform: scale(1.05);
         }
+
+        /* LETTER SECTIONS FADE IN SEQUENCE */
         .message-content {
             display: none;
-            opacity: 0;
-            transition: opacity 2s ease-in;
             text-align: left;
             margin-top: 25px;
             position: relative;
@@ -299,8 +315,18 @@
         }
         .message-content.show {
             display: block;
-            opacity: 1;
         }
+
+        .fade-element {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 2s ease, transform 2s ease;
+        }
+        .fade-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         h1 {
             color: #66fcf1;
             font-size: 2em;
@@ -347,7 +373,7 @@
         </div>
 
         <!-- Sliding Picture Puzzle Game -->
-        <div class="puzzle-section">
+        <div class="puzzle-section" id="puzzleSection">
             <div class="puzzle-title" id="puzzleTitle">A beautiful picture 💓waiting for its pieces to meet 🌸</div>
             <div class="puzzle-board" id="puzzleBoard"></div>
             <button class="puzzle-btn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
@@ -365,19 +391,19 @@
         <button class="reveal-btn" id="revealBtn" onclick="revealMessage()">Tap to Open My Heart ✨</button>
 
         <div class="message-content" id="messageContent">
-            <h1>To My Beloved Enuye</h1>
+            <h1 class="fade-element" id="letterTitle">To My Beloved Enuye</h1>
             
-            <div class="old-arabic-style">
+            <div class="old-arabic-style fade-element" id="para1">
                 "In the garden of my life, you are the rarest bloom that ever graced my soul. Before you, my world was silent; with you, every beat of my heart is a celebration of your existence."
             </div>
 
-            <p>Happy birthday enu to the gurl who hold my entire heart everyday with you feels like a special gift zare gn it's more special bc its ur special day.</p>
+            <p class="fade-element" id="para2">Happy birthday enu to the gurl who hold my entire heart everyday with you feels like a special gift zare gn it's more special bc its ur special day.</p>
             
-            <p>I truly wish we were close right now so I could shower you with surprise gifts to give back even a fraction of the happiness you bring me every single day just by talking to me I promise you enu inshallah like the day will come when all of these quiet wishes become our reality.</p>
+            <p class="fade-element" id="para3">I truly wish we were close right now so I could shower you with surprise gifts to give back even a fraction of the happiness you bring me every single day just by talking to me I promise you enu inshallah like the day will come when all of these quiet wishes become our reality.</p>
             
-            <p style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you aysel I love you today tomorrow and for every day for the rest of my life♥️️</p>
+            <p class="fade-element" id="para4" style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you aysel I love you today tomorrow and for every day for the rest of my life♥</p>
             
-            <div class="signature">Always yours, Khalid ❤️</div>
+            <div class="signature fade-element" id="signature">Always yours, Khalid ❤️</div>
         </div>
     </div>
 
@@ -491,11 +517,43 @@
             const isWon = boardState.every((val, idx) => val === winningState[idx]);
             if (isWon) {
                 isPuzzleSolved = true;
-                initPuzzle();
+                initPuzzle(); // Seamlessly completes the full picture
                 
                 const msgBox = document.getElementById('puzzleMessage');
                 msgBox.innerHTML = "✨ There is she the most beautiful piece of my world ♥️ a pieces of heaven i never want to lose ✨";
                 msgBox.classList.add('show-win');
+
+                // Wait 15 seconds, then slowly fade away the puzzle section and lines, and reveal the letter lines sequentially
+                setTimeout(() => {
+                    const puzzleSec = document.getElementById('puzzleSection');
+                    puzzleSec.classList.add('fade-out');
+
+                    // Automatically trigger card movement and letter display sequence
+                    setTimeout(() => {
+                        const container = document.getElementById('cardContainer');
+                        const message = document.getElementById('messageContent');
+                        const btn = document.getElementById('revealBtn');
+                        const floatingHeart = document.getElementById('floatingHeart');
+                        
+                        container.classList.add('move-up');
+                        floatingHeart.style.animation = 'none'; 
+                        void floatingHeart.offsetWidth; 
+                        floatingHeart.style.animation = null; 
+
+                        btn.style.display = 'none';
+                        message.classList.add('show');
+
+                        // Staggered line-by-line appearance
+                        setTimeout(() => document.getElementById('para1').classList.add('visible'), 300);
+                        setTimeout(() => document.getElementById('para2').classList.add('visible'), 1200);
+                        setTimeout(() => document.getElementById('para3').classList.add('visible'), 2100);
+                        setTimeout(() => document.getElementById('para4').classList.add('visible'), 3000);
+                        setTimeout(() => document.getElementById('letterTitle').classList.add('visible'), 3900);
+                        setTimeout(() => document.getElementById('signature').classList.add('visible'), 4800);
+
+                    }, 2000); // Wait slightly as the puzzle fades
+
+                }, 15000); // 15 seconds display time
             }
         }
 
@@ -551,12 +609,15 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
+        // Manual button click fallback just in case she wants to open it immediately
         function revealMessage() {
             const container = document.getElementById('cardContainer');
             const message = document.getElementById('messageContent');
             const btn = document.getElementById('revealBtn');
             const floatingHeart = document.getElementById('floatingHeart');
+            const puzzleSec = document.getElementById('puzzleSection');
             
+            puzzleSec.classList.add('fade-out');
             container.classList.add('move-up');
             
             floatingHeart.style.animation = 'none'; 
@@ -564,9 +625,14 @@
             floatingHeart.style.animation = null; 
 
             btn.style.display = 'none';
-            setTimeout(() => {
-                message.classList.add('show');
-            }, 800);
+            message.classList.add('show');
+            
+            document.getElementById('para1').classList.add('visible');
+            document.getElementById('para2').classList.add('visible');
+            document.getElementById('para3').classList.add('visible');
+            document.getElementById('para4').classList.add('visible');
+            document.getElementById('letterTitle').classList.add('visible');
+            document.getElementById('signature').classList.add('visible');
         }
     </script>
 
