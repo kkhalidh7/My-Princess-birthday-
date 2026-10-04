@@ -98,20 +98,8 @@
             border: 1px dashed #66fcf1;
             padding: 15px;
             border-radius: 10px;
-            transition: opacity 1s ease, transform 1s ease, max-height 1s ease, margin 1s ease, padding 1s ease;
-            max-height: 400px;
-            overflow: hidden;
+            transition: opacity 1s ease;
         }
-        .puzzle-section.hidden-section {
-            opacity: 0;
-            max-height: 0;
-            margin-top: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            border: none;
-            pointer-events: none;
-        }
-
         .puzzle-title {
             color: #66fcf1;
             font-size: 0.95em;
@@ -177,21 +165,21 @@
             color: #0b0c10;
         }
 
-        /* BRIGHT ROSE PINK HIGHLIGHTED LOVE QUOTE CARD */
+        /* BRIGHT ROSE PINK HIGHLIGHTED LOVE QUOTE CARD (Moved up & fully visible) */
         #puzzleMessage {
-            font-size: 1.1em;
+            font-size: 1.05em;
             color: #ff2a85;
-            margin-top: 5px;
+            margin-top: 15px;
             font-family: 'Georgia', serif;
             font-style: italic;
             font-weight: bold;
-            line-height: 1.7;
-            text-shadow: 0 0 15px rgba(255, 42, 133, 0.6);
-            padding: 15px 18px;
+            line-height: 1.6;
+            text-shadow: 0 0 12px rgba(255, 42, 133, 0.6);
+            padding: 15px;
             background: #0b0c10;
             border: 2px solid #ff2a85;
             border-radius: 10px;
-            box-shadow: 0 0 25px rgba(255, 42, 133, 0.3);
+            box-shadow: 0 0 20px rgba(255, 42, 133, 0.3);
             display: none;
             opacity: 0;
             transition: opacity 1.5s ease-in-out;
@@ -283,7 +271,7 @@
             opacity: 0;
             transition: opacity 2s ease-in;
             text-align: left;
-            margin-top: 20px;
+            margin-top: 25px;
             position: relative;
             z-index: 5;
         }
@@ -400,7 +388,6 @@
             tryNext();
         }
 
-        // PUZZLE LOGIC (3x3 Sliding Puzzle)
         let boardState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let winningState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -451,12 +438,11 @@
             const board = document.getElementById('puzzleBoard');
             board.classList.remove('solved-board');
             
-            const section = document.getElementById('puzzleSectionContainer');
-            section.classList.remove('hidden-section');
-
             const msgBox = document.getElementById('puzzleMessage');
             msgBox.innerHTML = "";
             msgBox.classList.remove('show-win');
+            document.getElementById('puzzleSectionContainer').style.display = 'block';
+            document.getElementById('puzzleSectionContainer').style.opacity = '1';
             document.getElementById('shuffleBtn').style.display = 'inline-block';
             document.getElementById('puzzleTitle').style.display = 'block';
             document.getElementById('mainPhoto').style.filter = 'brightness(1)';
@@ -487,27 +473,24 @@
                 // 1. Lines disappear immediately
                 const board = document.getElementById('puzzleBoard');
                 board.classList.add('solved-board');
-                initPuzzle(); 
+                initPuzzle();
 
-                // Hide shuffle button and title instructions
-                document.getElementById('shuffleBtn').style.display = 'none';
-                document.getElementById('puzzleTitle').style.display = 'none';
-
-                // 2. Stay normal for 3 seconds, then picture slowly fades into darkness
+                // 2. Stay normal for 3 seconds, then picture dims down
                 setTimeout(() => {
                     document.getElementById('mainPhoto').style.filter = 'brightness(0.25)';
                 }, 3000);
 
-                // 3. Puzzle section collapses smoothly and love letter quote fades in at the top
+                // 3. Puzzle section completely collapses/fades out, and quote appears right in its place
                 setTimeout(() => {
                     const section = document.getElementById('puzzleSectionContainer');
-                    section.classList.add('hidden-section');
+                    section.style.opacity = '0';
                     
                     setTimeout(() => {
+                        section.style.display = 'none';
                         const msgBox = document.getElementById('puzzleMessage');
                         msgBox.innerHTML = "And there she is the one my heart has always been looking for ❤️ my pieces of heaven i never want to lose ur the beautiful part of my life 💖";
                         msgBox.classList.add('show-win');
-                    }, 500);
+                    }, 800);
                 }, 4000);
             }
         }
