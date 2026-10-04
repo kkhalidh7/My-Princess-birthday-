@@ -298,7 +298,7 @@
     <div class="floating-heart-cake" id="floatingHeart">❤️</div>
 
     <div class="container" id="cardContainer">
-        <!-- Photo Frame (Rotates randomly between her 3 photos on open) -->
+        <!-- Photo Frame -->
         <div class="photo-frame" id="photoFrame">
             <img id="mainPhoto" src="" alt="Enuye">
         </div>
@@ -332,23 +332,52 @@
             
             <p>I truly wish we were close right now so I could shower you with surprise gifts to give back even a fraction of the happiness you bring me every single day just by talking to me I promise you enu inshallah like the day will come when all of these quiet wishes become our reality.</p>
             
-            <p style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you for the rest of my life ♥️♥️♥️😘</p>
+            <p style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you for the rest of my life ♥️️♥️♥️😘</p>
             
             <div class="signature">— From by your man, Khalid</div>
         </div>
     </div>
 
     <script>
-        // ROTATING HER 3 ACTUAL PHOTOS LIST
-        const photos = [
-            "enuye1.jpg",
-            "enuye2.jpg",
-            "enuye3.jpg"
+        // List of possible filenames with both lowercase and uppercase extensions
+        const possiblePhotos = [
+            "enuye1.jpg", "enuye1.JPG", "enuye1.jpeg",
+            "enuye2.jpg", "enuye2.JPG", "enuye2.jpeg",
+            "enuye3.jpg", "enuye3.JPG", "enuye3.jpeg"
         ];
 
-        // Pick a random photo from her 3 pictures every time the page is loaded/refreshed
-        const selectedPhoto = photos[Math.floor(Math.random() * photos.length)];
-        document.getElementById('mainPhoto').src = selectedPhoto;
+        let selectedPhoto = "";
+
+        // Function to test which image actually exists and loads successfully
+        function loadValidPhoto() {
+            // Pick a random base number 1, 2, or 3
+            const randNum = Math.floor(Math.random() * 3) + 1;
+            const candidates = [`enuye${randNum}.jpg`, `enuye${randNum}.JPG`, `enuye${randNum}.jpeg`];
+            
+            let imgTest = new Image();
+            let index = 0;
+
+            function tryNext() {
+                if (index < candidates.length) {
+                    imgTest.src = candidates[index];
+                    imgTest.onload = function() {
+                        selectedPhoto = candidates[index];
+                        document.getElementById('mainPhoto').src = selectedPhoto;
+                        shufflePuzzle();
+                    };
+                    imgTest.onerror = function() {
+                        index++;
+                        tryNext();
+                    };
+                } else {
+                    // Fallback to default if none match
+                    selectedPhoto = candidates[0];
+                    document.getElementById('mainPhoto').src = selectedPhoto;
+                    shufflePuzzle();
+                }
+            }
+            tryNext();
+        }
 
         // PUZZLE LOGIC (3x3 Sliding Puzzle)
         let boardState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -417,8 +446,8 @@
             }
         }
 
-        // Initialize puzzle on load
-        shufflePuzzle();
+        // Initialize photo loading & puzzle on startup
+        loadValidPhoto();
 
         // Generate floating background hearts
         function createHeart() {
