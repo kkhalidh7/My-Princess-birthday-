@@ -57,8 +57,9 @@
             transition: transform 0.5s ease-in-out;
         }
 
-        .container.move-up {
-            transform: translateY(-5%);
+        /* Photo Frame Wrapper */
+        .photo-area {
+            transition: opacity 1s ease, transform 1s ease;
         }
 
         /* Photo Frame */
@@ -70,21 +71,14 @@
             border: 2px solid #66fcf1;
             position: relative;
             background: #0b0c10;
-            transition: opacity 1s ease, max-height 1s ease, margin 1s ease;
         }
-        .photo-frame.hidden-photo {
-            opacity: 0;
-            max-height: 0;
-            border: none;
-            margin: 0;
-        }
-
         img {
             width: 100%;
             height: auto;
             max-height: 450px;
             object-fit: contain;
             display: block;
+            transition: filter 1s ease;
         }
 
         .cutting-cake img {
@@ -172,65 +166,69 @@
             color: #0b0c10;
         }
 
-        /* HEART-SHAPED MESSAGE CONTAINER */
-        .heart-message-box {
-            margin: 20px auto;
-            width: 320px;
-            height: 290px;
-            background: #0b0c10;
+        /* GLOWING HEART-SHAPED MESSAGE CARD (TOP SPACE) */
+        #puzzleMessage {
             position: relative;
-            transform: rotate(-45deg);
+            width: 100%;
+            max-width: 420px;
+            min-height: 320px;
+            margin: 0 auto 20px auto;
+            background: linear-gradient(135deg, #1f2833, #0b0c10);
+            transform: rotate(-45deg) scale(0.9);
             border: 2px solid #ff2a85;
             box-shadow: 0 0 25px rgba(255, 42, 133, 0.4);
             display: none;
             opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            justify-content: center;
-            align-items: center;
+            transition: opacity 1.5s ease-in-out, transform 1s ease-in-out;
+            z-index: 10;
         }
-        .heart-message-box.show-win {
-            display: flex;
-            opacity: 1;
-        }
-        .heart-message-box::before,
-        .heart-message-box::after {
+        #puzzleMessage::before,
+        #puzzleMessage::after {
             content: "";
             position: absolute;
-            width: 320px;
-            height: 290px;
+            width: 100%;
+            height: 100%;
             background: inherit;
             border-radius: 50%;
             border: 2px solid #ff2a85;
         }
-        .heart-message-box::before {
-            top: -155px;
+        #puzzleMessage::before {
+            top: -50%;
             left: 0;
             border-bottom: none;
             border-right: none;
         }
-        .heart-message-box::after {
-            left: 155px;
+        #puzzleMessage::after {
+            left: 50%;
             top: 0;
             border-bottom: none;
             border-left: none;
         }
+        #puzzleMessage.show-win {
+            display: flex;
+            opacity: 1;
+            transform: rotate(-45deg) scale(1);
+        }
+
         .heart-text-inner {
             position: absolute;
             transform: rotate(45deg);
-            z-index: 5;
+            z-index: 15;
             text-align: center;
-            width: 250px;
-            font-size: 0.95em;
+            width: 290px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+            font-size: 1.05em;
             color: #ff2a85;
             font-family: 'Georgia', serif;
             font-style: italic;
             font-weight: bold;
-            line-height: 1.5;
-            text-shadow: 0 0 10px rgba(255, 42, 133, 0.6);
-            padding: 10px;
+            line-height: 1.6;
+            text-shadow: 0 0 12px rgba(255, 42, 133, 0.6);
         }
 
-        /* HEART-SHAPED COUNTDOWN BOX */
+        /* HEART SHAPE COUNTDOWN BOX */
         .heart-countdown {
             margin: 20px auto;
             width: 220px;
@@ -356,21 +354,22 @@
     <div class="hearts-bg" id="heartsBg"></div>
 
     <div class="container" id="cardContainer">
-        <!-- Photo Frame -->
-        <div class="photo-frame" id="photoFrame">
-            <img id="mainPhoto" src="" alt="Enuye">
+        <!-- Photo and Puzzle Area (Fades & slides up on win) -->
+        <div class="photo-area" id="photoAreaContainer">
+            <div class="photo-frame" id="photoFrame">
+                <img id="mainPhoto" src="" alt="Enuye">
+            </div>
+
+            <div class="puzzle-section" id="puzzleSectionContainer">
+                <div class="puzzle-title" id="puzzleTitle">A beautiful picture 💓waiting for its pieces to meet 🌸</div>
+                <div class="puzzle-board" id="puzzleBoard"></div>
+                <button class="puzzle-btn" id="shuffleBtn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
+            </div>
         </div>
 
-        <!-- Sliding Picture Puzzle Game -->
-        <div class="puzzle-section" id="puzzleSectionContainer">
-            <div class="puzzle-title" id="puzzleTitle">A beautiful picture 💓waiting for its pieces to meet 🌸</div>
-            <div class="puzzle-board" id="puzzleBoard"></div>
-            <button class="puzzle-btn" id="shuffleBtn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
-        </div>
-
-        <!-- Heart-Shaped Love Message Box (Appears after puzzle is solved) -->
-        <div class="heart-message-box" id="heartMessageBox">
-            <div class="heart-text-inner" id="puzzleMessage"></div>
+        <!-- Glowing Heart-Shaped Message Card that Appears in Top Space -->
+        <div id="puzzleMessage">
+            <div class="heart-text-inner" id="heartTextContent"></div>
         </div>
         
         <!-- Heart-Shaped Countdown -->
@@ -483,15 +482,10 @@
             const board = document.getElementById('puzzleBoard');
             board.classList.remove('solved-board');
             
-            const heartBox = document.getElementById('heartMessageBox');
-            heartBox.classList.remove('show-win');
-            document.getElementById('puzzleMessage').innerHTML = "";
-
-            document.getElementById('shuffleBtn').style.display = 'inline-block';
-            document.getElementById('puzzleTitle').style.display = 'block';
-            
-            const photoFrame = document.getElementById('photoFrame');
-            photoFrame.classList.remove('hidden-photo');
+            const msgBox = document.getElementById('puzzleMessage');
+            msgBox.classList.remove('show-win');
+            document.getElementById('photoAreaContainer').style.opacity = '1';
+            document.getElementById('photoAreaContainer').style.display = 'block';
 
             for (let i = 0; i < 100; i++) {
                 const emptyPos = boardState.indexOf(8);
@@ -519,29 +513,23 @@
                 // 1. Lines disappear immediately
                 const board = document.getElementById('puzzleBoard');
                 board.classList.add('solved-board');
-                initPuzzle();
+                initPuzzle(); 
 
-                // Hide shuffle button and title
-                document.getElementById('shuffleBtn').style.display = 'none';
-                document.getElementById('puzzleTitle').style.display = 'none';
-
-                // 2. Stay normal for 3 seconds, then photo fades away smoothly
+                // 2. Stay normal for 3 seconds, then picture and puzzle area fade out & disappear
                 setTimeout(() => {
-                    document.getElementById('photoFrame').classList.add('hidden-photo');
-                }, 3000);
-
-                // 3. Puzzle section fades away and heart message box pops up with text
-                setTimeout(() => {
-                    const section = document.getElementById('puzzleSectionContainer');
-                    section.style.opacity = '0';
+                    const photoArea = document.getElementById('photoAreaContainer');
+                    photoArea.style.opacity = '0';
                     
                     setTimeout(() => {
-                        section.style.display = 'none';
+                        photoArea.style.display = 'none';
+                        
+                        // 3. Heart-shaped text container fades into the top space
                         const msgBox = document.getElementById('puzzleMessage');
-                        msgBox.innerHTML = "And there she is the one my heart has always been looking for ❤️ my pieces of heaven i never want to lose ur the beautiful part of my life 💖";
-                        document.getElementById('heartMessageBox').classList.add('show-win');
+                        const heartText = document.getElementById('heartTextContent');
+                        heartText.innerHTML = "And there she is the one my heart has always been looking for ❤️ my pieces of heaven i never want to lose ur the beautiful part of my life 💖";
+                        msgBox.classList.add('show-win');
                     }, 1000);
-                }, 4000);
+                }, 3000);
             }
         }
 
