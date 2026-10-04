@@ -57,34 +57,8 @@
             transition: transform 0.5s ease-in-out;
         }
 
-        /* The Giant Floating Heart Animation */
-        .floating-heart-cake {
-            position: absolute;
-            left: 50%;
-            bottom: -150px;
-            transform: translateX(-50%);
-            font-size: 150px;
-            color: #66fcf1;
-            z-index: 10;
-            opacity: 0;
-            pointer-events: none;
-            animation: floatCake 4s ease-out forwards;
-            text-shadow: 0 0 20px #66fcf1;
-        }
-
-        @keyframes floatCake {
-            0% { bottom: -150px; opacity: 0; }
-            10% { opacity: 1; }
-            100% { bottom: 40%; opacity: 0; }
-        }
-
         .container.move-up {
             transform: translateY(-10%);
-        }
-
-        /* Puzzle & Photo Section Wrapper for Cinematic Fade */
-        #interactiveSection {
-            transition: opacity 1.5s ease-in-out;
         }
 
         /* Photo Frame */
@@ -103,7 +77,7 @@
             max-height: 450px;
             object-fit: contain;
             display: block;
-            transition: filter 0.5s ease;
+            transition: filter 1s ease;
         }
 
         .cutting-cake img {
@@ -124,6 +98,7 @@
             border: 1px dashed #66fcf1;
             padding: 15px;
             border-radius: 10px;
+            transition: opacity 1s ease;
         }
         .puzzle-title {
             color: #66fcf1;
@@ -143,19 +118,20 @@
             border: 2px solid #66fcf1;
             border-radius: 6px;
             background: #0b0c10;
-            transition: border 0.3s ease;
+            transition: border 0.5s ease;
         }
-        .puzzle-board.no-border {
-            border: none;
+        /* When solved, lines disappear instantly */
+        .puzzle-board.solved-board {
+            border: 2px solid transparent;
             gap: 0px;
         }
         .puzzle-tile {
             background-size: 240px 240px;
             cursor: pointer;
             border: 1px solid rgba(102, 252, 241, 0.3);
-            transition: border 0.3s ease, gap 0.3s ease;
+            transition: border 0.3s ease, background-color 0.5s ease;
         }
-        .puzzle-board.no-border .puzzle-tile {
+        .puzzle-board.solved-board .puzzle-tile {
             border: none !important;
         }
         .puzzle-tile.empty {
@@ -172,10 +148,6 @@
             line-height: 1.2;
             font-style: italic;
             box-shadow: inset 0 0 8px rgba(102, 252, 241, 0.2);
-        }
-        .puzzle-tile.completed-piece {
-            border: none;
-            cursor: default;
         }
 
         .puzzle-btn {
@@ -194,25 +166,25 @@
             color: #0b0c10;
         }
 
-        /* Cinematic Transition Win Message Card with Extra Spacing */
+        /* BRIGHT ROSE PINK HIGHLIGHTED LOVE QUOTE CARD */
         #puzzleMessage {
             font-size: 1.15em;
-            color: #ff4081;
+            color: #ff2a85;
             margin-top: 20px;
             font-family: 'Georgia', serif;
             font-style: italic;
             font-weight: bold;
             line-height: 1.8;
-            letter-spacing: 0.5px;
-            text-shadow: 0 0 12px rgba(255, 64, 129, 0.5);
-            padding: 20px;
+            text-shadow: 0 0 15px rgba(255, 42, 133, 0.6);
+            padding: 18px 20px;
             background: #0b0c10;
-            border: 1px solid #ff4081;
+            border: 2px solid #ff2a85;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 64, 129, 0.3);
+            box-shadow: 0 0 25px rgba(255, 42, 133, 0.3);
             display: none;
             opacity: 0;
             transition: opacity 1.5s ease-in-out;
+            text-align: center;
         }
         #puzzleMessage.show-win {
             display: block;
@@ -294,6 +266,7 @@
             background-color: #45a29e;
             transform: scale(1.05);
         }
+        
         .message-content {
             display: none;
             opacity: 0;
@@ -343,28 +316,19 @@
     <!-- Floating Background Hearts -->
     <div class="hearts-bg" id="heartsBg"></div>
 
-    <!-- The Giant Floating Heart Animation -->
-    <div class="floating-heart-cake" id="floatingHeart">❤️</div>
-
     <div class="container" id="cardContainer">
-        
-        <!-- Interactive Section (Fades out after puzzle completion) -->
-        <div id="interactiveSection">
-            <!-- Photo Frame -->
-            <div class="photo-frame" id="photoFrame">
-                <img id="mainPhoto" src="" alt="Enuye">
-            </div>
-
-            <!-- Sliding Picture Puzzle Game -->
-            <div class="puzzle-section" id="puzzleSectionBox">
-                <div class="puzzle-title" id="puzzleTitle">A beautiful picture 💓waiting for its pieces to meet 🌸</div>
-                <div class="puzzle-board" id="puzzleBoard"></div>
-                <button class="puzzle-btn" id="shuffleBtn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
-            </div>
+        <!-- Photo Frame -->
+        <div class="photo-frame" id="photoFrame">
+            <img id="mainPhoto" src="" alt="Enuye">
         </div>
 
-        <!-- Cinematic Rose-Pink Love Letter Message -->
-        <div id="puzzleMessage"></div>
+        <!-- Sliding Picture Puzzle Game -->
+        <div class="puzzle-section" id="puzzleSectionContainer">
+            <div class="puzzle-title" id="puzzleTitle">A beautiful picture 💓waiting for its pieces to meet 🌸</div>
+            <div class="puzzle-board" id="puzzleBoard"></div>
+            <button class="puzzle-btn" id="shuffleBtn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
+            <div id="puzzleMessage"></div>
+        </div>
         
         <!-- Heart-Shaped Countdown -->
         <div class="heart-countdown">
@@ -387,7 +351,7 @@
             
             <p>I truly wish we were close right now so I could shower you with surprise gifts to give back even a fraction of the happiness you bring me every single day just by talking to me I promise you enu inshallah like the day will come when all of these quiet wishes become our reality.</p>
             
-            <p style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you aysel I love you today tomorrow and for every day for the rest of my life♥</p>
+            <p style="text-align: center; font-weight: bold; color: #ff2a85; margin-top: 25px; text-shadow: 0 0 10px rgba(255, 42, 133, 0.4);">I love you aysel I love you today tomorrow and for every day for the rest of my life ♥</p>
             
             <div class="signature">Always yours, Khalid ❤️</div>
         </div>
@@ -397,7 +361,6 @@
         let selectedPhoto = "";
         let isPuzzleSolved = false;
 
-        // Function to test which image actually exists and loads successfully
         function loadValidPhoto() {
             const randNum = Math.floor(Math.random() * 3) + 1;
             const candidates = [`enuye${randNum}.jpg`, `enuye${randNum}.JPG`, `enuye${randNum}.jpeg`];
@@ -447,9 +410,6 @@
                     tile.style.backgroundImage = `url('${selectedPhoto}')`;
                     tile.style.backgroundSize = '240px 240px';
                     tile.style.backgroundPosition = `-${col * 80}px -${row * 80}px`;
-                    if (isPuzzleSolved) {
-                        tile.classList.add('completed-piece');
-                    }
                 }
                 
                 if (!isPuzzleSolved) {
@@ -478,11 +438,14 @@
         function shufflePuzzle() {
             isPuzzleSolved = false;
             const board = document.getElementById('puzzleBoard');
-            board.classList.remove('no-border');
+            board.classList.remove('solved-board');
             
             const msgBox = document.getElementById('puzzleMessage');
             msgBox.innerHTML = "";
             msgBox.classList.remove('show-win');
+            document.getElementById('shuffleBtn').style.display = 'inline-block';
+            document.getElementById('puzzleTitle').style.display = 'block';
+            document.getElementById('mainPhoto').style.filter = 'brightness(1)';
 
             for (let i = 0; i < 100; i++) {
                 const emptyPos = boardState.indexOf(8);
@@ -507,30 +470,35 @@
             if (isWon) {
                 isPuzzleSolved = true;
                 
-                // 1. Instantly remove puzzle lines and text/button
+                // 1. Lines disappear immediately
                 const board = document.getElementById('puzzleBoard');
-                board.classList.add('no-border');
-                document.getElementById('puzzleTitle').style.display = 'none';
+                board.classList.add('solved-board');
+                initPuzzle(); // Redraws the 9th piece seamlessly without internal borders
+
+                // Hide shuffle button and title instructions
                 document.getElementById('shuffleBtn').style.display = 'none';
-                initPuzzle(); // Renders final matching piece seamlessly without gaps
+                document.getElementById('puzzleTitle').style.display = 'none';
 
-                // 2. Stay whole for 3 seconds, then cinematic fade into darkness
+                // 2. Stay normal for 3 seconds, then picture slowly fades into darkness
                 setTimeout(() => {
-                    document.getElementById('interactiveSection').style.opacity = '0';
-                    document.getElementById('puzzleSectionBox').style.display = 'none';
+                    document.getElementById('mainPhoto').style.filter = 'brightness(0.25)';
+                }, 3000);
 
-                    // 3. Fade in your rose-pink love message smoothly
+                // 3. Line/puzzle section fades away and love letter quote slowly appears
+                setTimeout(() => {
+                    const section = document.getElementById('puzzleSectionContainer');
+                    section.style.opacity = '0';
+                    
                     setTimeout(() => {
+                        section.style.display = 'none';
                         const msgBox = document.getElementById('puzzleMessage');
                         msgBox.innerHTML = "And there she is the one my heart has always been looking for ❤️ my pieces of heaven i never want to lose ur the beautiful part of my life 💖";
                         msgBox.classList.add('show-win');
                     }, 1000);
-
-                }, 3000);
+                }, 4000);
             }
         }
 
-        // Initialize photo loading & puzzle on startup
         loadValidPhoto();
 
         // Generate floating background hearts
@@ -586,14 +554,8 @@
             const container = document.getElementById('cardContainer');
             const message = document.getElementById('messageContent');
             const btn = document.getElementById('revealBtn');
-            const floatingHeart = document.getElementById('floatingHeart');
             
             container.classList.add('move-up');
-            
-            floatingHeart.style.animation = 'none'; 
-            void floatingHeart.offsetWidth; 
-            floatingHeart.style.animation = null; 
-
             btn.style.display = 'none';
             setTimeout(() => {
                 message.classList.add('show');
