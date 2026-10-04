@@ -114,6 +114,64 @@
             100% { transform: scale(1) rotate(0deg); }
         }
 
+        /* PUZZLE SECTION STYLES */
+        .puzzle-section {
+            margin-top: 20px;
+            background: rgba(11, 12, 16, 0.5);
+            border: 1px dashed #66fcf1;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .puzzle-title {
+            color: #66fcf1;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        .puzzle-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3px;
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 10px auto;
+            border: 2px solid #66fcf1;
+            border-radius: 6px;
+            background: #0b0c10;
+        }
+        .puzzle-tile {
+            background-size: 240px 240px;
+            cursor: pointer;
+            border: 1px solid rgba(102, 252, 241, 0.3);
+            transition: opacity 0.2s;
+        }
+        .puzzle-tile.empty {
+            background: #0b0c10 !important;
+            border: none;
+            cursor: default;
+        }
+        .puzzle-btn {
+            background: transparent;
+            color: #66fcf1;
+            border: 1px solid #66fcf1;
+            padding: 6px 15px;
+            font-size: 0.85em;
+            font-family: 'Georgia', serif;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .puzzle-btn:hover {
+            background: #66fcf1;
+            color: #0b0c10;
+        }
+        #puzzleMessage {
+            font-size: 0.85em;
+            color: #45a29e;
+            margin-top: 5px;
+            min-height: 18px;
+        }
+
         /* HEART SHAPE COUNTDOWN BOX */
         .heart-countdown {
             margin: 20px auto;
@@ -241,9 +299,17 @@
     <div class="floating-heart-cake" id="floatingHeart">❤️</div>
 
     <div class="container" id="cardContainer">
-        <!-- Photo Frame with dynamic cake cutting check -->
-        <div class="photo-frame" id="photoFrame" onclick="revealMessage()">
-            <img src="1784745890077.png" alt="Enuye">
+        <!-- Photo Frame (Rotates randomly on open) -->
+        <div class="photo-frame" id="photoFrame">
+            <img id="mainPhoto" src="" alt="Enuye">
+        </div>
+
+        <!-- Sliding Picture Puzzle Game -->
+        <div class="puzzle-section">
+            <div class="puzzle-title">🧩 Solve Her Picture Puzzle ✨</div>
+            <div class="puzzle-board" id="puzzleBoard"></div>
+            <button class="puzzle-btn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
+            <div id="puzzleMessage"></div>
         </div>
         
         <!-- Heart-Shaped Countdown -->
@@ -274,6 +340,89 @@
     </div>
 
     <script>
+        // ROTATING PHOTOS LIST
+        const photos = [
+            "1784745890077.png",
+            "1000019102.jpg",
+            "1000019103.jpg",
+            "1000019104.jpg"
+        ];
+
+        // Pick a random photo every time the page is loaded/refreshed
+        const selectedPhoto = photos[Math.floor(Math.random() * photos.length)];
+        document.getElementById('mainPhoto').src = selectedPhoto;
+
+        // PUZZLE LOGIC (3x3 Sliding Puzzle)
+        let boardState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let winningState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+        function initPuzzle() {
+            const board = document.getElementById('puzzleBoard');
+            board.innerHTML = '';
+            
+            boardState.forEach((tileIndex, currentPos) => {
+                const tile = document.createElement('div');
+                tile.className = 'puzzle-tile';
+                if (tileIndex === 8) {
+                    tile.classList.add('empty');
+                } else {
+                    const row = Math.floor(tileIndex / 3);
+                    const col = tileIndex % 3;
+                    tile.style.backgroundImage = `url('${selectedPhoto}')`;
+                    tile.style.backgroundPosition = `-${col * 80}px -${row * 80}px`;
+                }
+                tile.onclick = () => moveTile(currentPos);
+                board.appendChild(tile);
+            });
+        }
+
+        function moveTile(pos) {
+            const emptyPos = boardState.indexOf(8);
+            const row = Math.floor(pos / 3);
+            const col = pos % 3;
+            const emptyRow = Math.floor(emptyPos / 3);
+            const emptyCol = emptyPos % 3;
+
+            // Check if clicked tile is adjacent to empty tile
+            if (Math.abs(row - emptyRow) + Math.abs(col - emptyCol) === 1) {
+                boardState[emptyPos] = boardState[pos];
+                boardState[pos] = 8;
+                initPuzzle();
+                checkWin();
+            }
+        }
+
+        function shufflePuzzle() {
+            // Random valid moves to ensure it's always solvable
+            for (let i = 0; i < 100; i++) {
+                const emptyPos = boardState.indexOf(8);
+                const validMoves = [];
+                const row = Math.floor(emptyPos / 3);
+                const col = emptyPos % 3;
+
+                if (row > 0) validMoves.push(emptyPos - 3);
+                if (row < 2) validMoves.push(emptyPos + 3);
+                if (col > 0) validMoves.push(emptyPos - 1);
+                if (col < 2) validMoves.push(emptyPos + 1);
+
+                const randomMove = validMoves[Math.floor(Math.random() * validMoves.length)];
+                boardState[emptyPos] = boardState[randomMove];
+                boardState[randomMove] = 8;
+            }
+            document.getElementById('puzzleMessage').innerHTML = "";
+            initPuzzle();
+        }
+
+        function checkWin() {
+            const isWon = boardState.every((val, idx) => val === winningState[idx]);
+            if (isWon) {
+                document.getElementById('puzzleMessage').innerHTML = "🎉 Puzzle Solved! Just like you complete my heart ❤️";
+            }
+        }
+
+        // Initialize puzzle on load
+        shufflePuzzle();
+
         // Generate floating background hearts
         function createHeart() {
             const heartsBg = document.getElementById('heartsBg');
@@ -294,15 +443,13 @@
         function updateCountdown() {
             const now = new Date();
             let year = now.getFullYear();
-            let birthday = new Date(year, 6, 22); // Month 6 is July (0-indexed)
+            let birthday = new Date(year, 6, 22);
 
-            // If July 22 has passed this year, target next year
             if (now > birthday) {
                 birthday = new Date(year + 1, 6, 22);
             }
 
             const diff = birthday - now;
-
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
             const minutes = Math.floor((diff / 1000 / 60) % 60);
@@ -311,11 +458,10 @@
             const countdownTitle = document.getElementById('countdownTitle');
             const photoFrame = document.getElementById('photoFrame');
 
-            // Check if today IS July 22
             if (now.getMonth() === 6 && now.getDate() === 22) {
                 countdownTitle.innerHTML = "IT'S TODAY!";
                 timerDisplay.innerHTML = "🥳🎂🎉";
-                photoFrame.classList.add('cutting-cake'); // Triggers the cake cutting animation!
+                photoFrame.classList.add('cutting-cake');
             } else {
                 countdownTitle.innerHTML = "Until July 22";
                 timerDisplay.innerHTML = `${days}d ${hours}h ${minutes}m`;
