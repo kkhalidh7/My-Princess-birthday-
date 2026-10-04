@@ -140,7 +140,7 @@
             background: #0b0c10;
         }
         .puzzle-tile {
-            background-size: 240px 240px;
+            background-size: cover;
             cursor: pointer;
             border: 1px solid rgba(102, 252, 241, 0.3);
             transition: opacity 0.2s;
@@ -351,9 +351,48 @@
         const selectedPhoto = photos[Math.floor(Math.random() * photos.length)];
         document.getElementById('mainPhoto').src = selectedPhoto;
 
-        // PUZZLE LOGIC (3x3 Sliding Puzzle)
+        // PUZZLE LOGIC WITH DYNAMIC CANVAS SLICING
         let boardState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let winningState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        let tileImages = [];
+
+        function preparePuzzleImage() {
+            const img = new Image();
+            img.src = selectedPhoto;
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Crop image into a square based on the smaller dimension
+                const size = Math.min(img.width, img.height);
+                canvas.width = 300;
+                canvas.height = 300;
+                
+                const startX = (img.width - size) / 2;
+                const startY = (img.height - size) / 2;
+
+                const pieceSize = size / 3;
+                tileImages = [];
+
+                for (let row = 0; row < 3; row++) {
+                    for (let col = 0; col < 3; col++) {
+                        const pieceCanvas = document.createElement('canvas');
+                        pieceCanvas.width = 100;
+                        pieceCanvas.height = 100;
+                        const pCtx = pieceCanvas.getContext('2d');
+                        
+                        pCtx.drawImage(
+                            img, 
+                            startX + (col * pieceSize), startY + (row * pieceSize), pieceSize, pieceSize, 
+                            0, 0, 100, 100
+                        );
+                        
+                        tileImages.push(pieceCanvas.toDataURL());
+                    }
+                }
+                shufflePuzzle();
+            };
+        }
 
         function initPuzzle() {
             const board = document.getElementById('puzzleBoard');
@@ -365,10 +404,7 @@
                 if (tileIndex === 8) {
                     tile.classList.add('empty');
                 } else {
-                    const row = Math.floor(tileIndex / 3);
-                    const col = tileIndex % 3;
-                    tile.style.backgroundImage = `url('${selectedPhoto}')`;
-                    tile.style.backgroundPosition = `-${col * 80}px -${row * 80}px`;
+                    tile.style.backgroundImage = `url('${tileImages[tileIndex]}')`;
                 }
                 tile.onclick = () => moveTile(currentPos);
                 board.appendChild(tile);
@@ -419,8 +455,8 @@
             }
         }
 
-        // Initialize puzzle on load
-        shufflePuzzle();
+        // Initialize puzzle image on load
+        preparePuzzleImage();
 
         // Generate floating background hearts
         function createHeart() {
