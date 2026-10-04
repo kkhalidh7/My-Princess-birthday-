@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To My Beloved Aysel</title>
+    <title>To My Beloved Enuye</title>
     <style>
         body {
             background-color: #0b0c10;
@@ -34,7 +34,7 @@
         .heart {
             position: absolute;
             bottom: -20px;
-            color: rgba(255, 107, 157, 0.25);
+            color: rgba(102, 252, 241, 0.2);
             font-size: 20px;
             animation: floatUp 6s linear infinite;
         }
@@ -53,7 +53,7 @@
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-            border: 1px solid #ff6b9d;
+            border: 1px solid #66fcf1;
             transition: transform 0.5s ease-in-out;
         }
 
@@ -64,12 +64,12 @@
             bottom: -150px;
             transform: translateX(-50%);
             font-size: 150px;
-            color: #ff6b9d;
+            color: #66fcf1;
             z-index: 10;
             opacity: 0;
             pointer-events: none;
             animation: floatCake 4s ease-out forwards;
-            text-shadow: 0 0 20px #ff6b9d;
+            text-shadow: 0 0 20px #66fcf1;
         }
 
         @keyframes floatCake {
@@ -88,7 +88,7 @@
             max-height: 450px;
             overflow: hidden;
             border-radius: 10px;
-            border: 2px solid #ff6b9d;
+            border: 2px solid #66fcf1;
             position: relative;
             background: #0b0c10;
         }
@@ -115,13 +115,13 @@
         /* PUZZLE SECTION STYLES */
         .puzzle-section {
             margin-top: 20px;
-            background: rgba(31, 22, 35, 0.7);
-            border: 1px dashed #ff6b9d;
+            background: rgba(11, 12, 16, 0.5);
+            border: 1px dashed #66fcf1;
             padding: 15px;
             border-radius: 10px;
         }
         .puzzle-title {
-            color: #ff6b9d;
+            color: #66fcf1;
             font-size: 0.95em;
             margin-bottom: 10px;
             letter-spacing: 1px;
@@ -130,51 +130,40 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
-            gap: 3px;
-            width: 246px;
-            height: 246px;
+            gap: 2px;
+            width: 240px;
+            height: 240px;
             margin: 0 auto 10px auto;
-            border: 2px solid #ff6b9d;
+            border: 2px solid #66fcf1;
             border-radius: 6px;
-            background: #180d15; /* Cute romantic dark-rose tone */
-            box-shadow: 0 0 15px rgba(255, 107, 157, 0.2);
+            background: #0b0c10;
         }
         .puzzle-tile {
             background-size: 240px 240px;
             cursor: pointer;
-            border: 1px solid rgba(255, 107, 157, 0.4);
+            border: 1px solid rgba(102, 252, 241, 0.3);
             transition: opacity 0.2s;
-            border-radius: 3px;
         }
-        /* The Free Empty Space Styling */
+        /* Cute background and text for the empty/free space slot */
         .puzzle-tile.empty {
-            background: linear-gradient(135deg, #2c1624, #1a0b17) !important;
-            border: 1px dashed #ff6b9d !important;
+            background: linear-gradient(135deg, #ff758c, #ff7eb3) !important;
+            border: 1px dashed #ffffff !important;
             cursor: default;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 4px;
-            text-align: center;
-            box-shadow: inset 0 0 8px rgba(255, 107, 157, 0.3);
-        }
-        .empty-text {
-            font-size: 0.6em;
-            color: #ff94b8;
-            font-family: 'Georgia', serif;
-            line-height: 1.2;
+            font-size: 11px;
+            color: #ffffff;
             font-weight: bold;
-            animation: pulseText 2s infinite ease-in-out;
+            text-align: center;
+            padding: 2px;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
         }
-        @keyframes pulseText {
-            0%, 100% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
-        }
-
         .puzzle-btn {
             background: transparent;
-            color: #ff6b9d;
-            border: 1px solid #ff6b9d;
+            color: #66fcf1;
+            border: 1px solid #66fcf1;
             padding: 6px 15px;
             font-size: 0.85em;
             font-family: 'Georgia', serif;
@@ -183,12 +172,12 @@
             transition: all 0.3s;
         }
         .puzzle-btn:hover {
-            background: #ff6b9d;
+            background: #66fcf1;
             color: #0b0c10;
         }
         #puzzleMessage {
             font-size: 0.85em;
-            color: #ff94b8;
+            color: #45a29e;
             margin-top: 5px;
             min-height: 18px;
         }
@@ -201,8 +190,8 @@
             background: linear-gradient(135deg, #1f2833, #0b0c10);
             position: relative;
             transform: rotate(-45deg);
-            border: 2px solid #ff6b9d;
-            box-shadow: 0 0 15px rgba(255, 107, 157, 0.3);
+            border: 2px solid #66fcf1;
+            box-shadow: 0 0 15px rgba(102, 252, 241, 0.3);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -215,7 +204,7 @@
             height: 200px;
             background: inherit;
             border-radius: 50%;
-            border: 2px solid #ff6b9d;
+            border: 2px solid #66fcf1;
         }
         .heart-countdown::before {
             top: -110px;
@@ -238,7 +227,7 @@
         }
         .countdown-title {
             font-size: 0.8em;
-            color: #ff6b9d;
+            color: #66fcf1;
             margin-bottom: 5px;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -251,7 +240,7 @@
         }
 
         .reveal-btn {
-            background-color: #ff6b9d;
+            background-color: #66fcf1;
             color: #0b0c10;
             border: none;
             padding: 12px 25px;
@@ -261,11 +250,11 @@
             border-radius: 25px;
             cursor: pointer;
             margin-top: 20px;
-            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+            box-shadow: 0 4px 15px rgba(102, 252, 241, 0.4);
             transition: all 0.3s;
         }
         .reveal-btn:hover {
-            background-color: #ff4785;
+            background-color: #45a29e;
             transform: scale(1.05);
         }
         .message-content {
@@ -282,7 +271,7 @@
             opacity: 1;
         }
         h1 {
-            color: #ff6b9d;
+            color: #66fcf1;
             font-size: 2em;
             text-align: center;
             margin-bottom: 20px;
@@ -295,15 +284,15 @@
         }
         .old-arabic-style {
             font-style: italic;
-            color: #ffb6c1;
-            border-left: 3px solid #ff6b9d;
+            color: #b0bec5;
+            border-left: 3px solid #45a29e;
             padding-left: 15px;
             margin-bottom: 25px;
             font-size: 1.2em;
         }
         .signature {
             text-align: center;
-            color: #ff6b9d;
+            color: #66fcf1;
             font-style: italic;
             font-size: 1.2em;
             margin-top: 20px;
@@ -322,7 +311,7 @@
     <div class="container" id="cardContainer">
         <!-- Photo Frame -->
         <div class="photo-frame" id="photoFrame">
-            <img id="mainPhoto" src="" alt="Aysel">
+            <img id="mainPhoto" src="" alt="Enuye">
         </div>
 
         <!-- Sliding Picture Puzzle Game -->
@@ -344,7 +333,7 @@
         <button class="reveal-btn" id="revealBtn" onclick="revealMessage()">Tap to Open My Heart ✨</button>
 
         <div class="message-content" id="messageContent">
-            <h1>To My Beloved Aysel</h1>
+            <h1>To My Beloved Enuye</h1>
             
             <div class="old-arabic-style">
                 "In the garden of my life, you are the rarest bloom that ever graced my soul. Before you, my world was silent; with you, every beat of my heart is a celebration of your existence."
@@ -354,16 +343,16 @@
             
             <p>I truly wish we were close right now so I could shower you with surprise gifts to give back even a fraction of the happiness you bring me every single day just by talking to me I promise you enu inshallah like the day will come when all of these quiet wishes become our reality.</p>
             
-            <p style="text-align: center; font-weight: bold; color: #ff6b9d; margin-top: 25px;">I love you for the rest of my life ♥️♥️♥️😘</p>
+            <p style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you for the rest of my life ♥️♥️♥️😘</p>
             
             <div class="signature">— From by your man, Khalid</div>
         </div>
     </div>
 
     <script>
+        // List of possible filenames with both lowercase and uppercase extensions
         let selectedPhoto = "";
 
-        // Function to test which image actually exists and loads successfully
         function loadValidPhoto() {
             const randNum = Math.floor(Math.random() * 3) + 1;
             const candidates = [`enuye${randNum}.jpg`, `enuye${randNum}.JPG`, `enuye${randNum}.jpeg`];
@@ -405,7 +394,7 @@
                 tile.className = 'puzzle-tile';
                 if (tileIndex === 8) {
                     tile.classList.add('empty');
-                    tile.innerHTML = '<div class="empty-text">I love you aysel 😘💓</div>';
+                    tile.innerHTML = "I love you aysel 😘💓";
                 } else {
                     const row = Math.floor(tileIndex / 3);
                     const col = tileIndex % 3;
