@@ -299,8 +299,8 @@
     <div class="floating-heart-cake" id="floatingHeart">❤️</div>
 
     <div class="container" id="cardContainer">
-        <!-- Photo Frame (Rotates randomly on open) -->
-        <div class="photo-frame" id="photoFrame">
+        <!-- Photo Frame (Rotates randomly between her 3 photos on open) -->
+        <div class="photo-frame" id="photoFrame" onclick="revealMessage()">
             <img id="mainPhoto" src="" alt="Enuye">
         </div>
 
@@ -340,15 +340,14 @@
     </div>
 
     <script>
-        // ROTATING PHOTOS LIST
+        // ROTATING HER 3 ACTUAL PHOTOS LIST
         const photos = [
-            "1784745890077.png",
             "1000019102.jpg",
             "1000019103.jpg",
             "1000019104.jpg"
         ];
 
-        // Pick a random photo every time the page is loaded/refreshed
+        // Pick a random photo from her 3 pictures every time the page is loaded/refreshed
         const selectedPhoto = photos[Math.floor(Math.random() * photos.length)];
         document.getElementById('mainPhoto').src = selectedPhoto;
 
