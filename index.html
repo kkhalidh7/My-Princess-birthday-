@@ -124,7 +124,8 @@
             color: #66fcf1;
             font-size: 0.95em;
             margin-bottom: 10px;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            font-style: italic;
         }
         .puzzle-board {
             display: grid;
@@ -144,21 +145,20 @@
             border: 1px solid rgba(102, 252, 241, 0.3);
             transition: opacity 0.2s;
         }
-        /* Cute background and text for the empty/free space slot */
         .puzzle-tile.empty {
-            background: linear-gradient(135deg, #ff758c, #ff7eb3) !important;
-            border: 1px dashed #ffffff !important;
+            background: #1f2833 !important;
+            border: 1px solid rgba(102, 252, 241, 0.5);
             cursor: default;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 11px;
-            color: #ffffff;
-            font-weight: bold;
+            font-size: 0.55em;
+            color: #66fcf1;
             text-align: center;
             padding: 2px;
-            box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            line-height: 1.2;
+            font-style: italic;
+            box-shadow: inset 0 0 8px rgba(102, 252, 241, 0.2);
         }
         .puzzle-btn {
             background: transparent;
@@ -176,10 +176,14 @@
             color: #0b0c10;
         }
         #puzzleMessage {
-            font-size: 0.85em;
-            color: #45a29e;
-            margin-top: 5px;
-            min-height: 18px;
+            font-size: 0.9em;
+            color: #ffffff;
+            margin-top: 10px;
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            line-height: 1.5;
+            text-shadow: 0 0 10px rgba(102, 252, 241, 0.4);
+            min-height: 20px;
         }
 
         /* HEART SHAPE COUNTDOWN BOX */
@@ -316,7 +320,7 @@
 
         <!-- Sliding Picture Puzzle Game -->
         <div class="puzzle-section">
-            <div class="puzzle-title">🧩 Solve Her Picture Puzzle ✨</div>
+            <div class="puzzle-title">A beautiful picture 💓waiting for its pieces to meet 🌸</div>
             <div class="puzzle-board" id="puzzleBoard"></div>
             <button class="puzzle-btn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
             <div id="puzzleMessage"></div>
@@ -350,9 +354,9 @@
     </div>
 
     <script>
-        // List of possible filenames with both lowercase and uppercase extensions
         let selectedPhoto = "";
 
+        // Function to test which image actually exists and loads successfully
         function loadValidPhoto() {
             const randNum = Math.floor(Math.random() * 3) + 1;
             const candidates = [`enuye${randNum}.jpg`, `enuye${randNum}.JPG`, `enuye${randNum}.jpeg`];
@@ -445,7 +449,7 @@
         function checkWin() {
             const isWon = boardState.every((val, idx) => val === winningState[idx]);
             if (isWon) {
-                document.getElementById('puzzleMessage').innerHTML = "🎉 Puzzle Solved! Just like you complete my heart ❤️";
+                document.getElementById('puzzleMessage').innerHTML = "✨ There she is, the most beautiful piece of my world ♥️ A piece of heaven I never want to lose ✨";
             }
         }
 
