@@ -82,7 +82,7 @@
             transform: translateY(-15%);
         }
 
-        /* Photo Frame */
+        /* Photo Frame & Cinematic Fade Out */
         .photo-frame {
             width: 100%;
             max-height: 450px;
@@ -91,6 +91,15 @@
             border: 2px solid #66fcf1;
             position: relative;
             background: #0b0c10;
+            transition: opacity 3s ease-in-out, transform 3s ease-in-out, max-height 1s ease-in-out, margin 1s ease-in-out, border 1s ease-in-out;
+        }
+        .photo-frame.fade-out {
+            opacity: 0;
+            transform: scale(0.95);
+            max-height: 0;
+            border: none;
+            margin: 0;
+            overflow: hidden;
         }
         img {
             width: 100%;
@@ -112,36 +121,29 @@
             100% { transform: scale(1) rotate(0deg); }
         }
 
-        /* PUZZLE SECTION STYLES WITH SMOOTH FADE OUT */
+        /* PUZZLE SECTION STYLES */
         .puzzle-section {
             margin-top: 20px;
             background: rgba(11, 12, 16, 0.5);
             border: 1px dashed #66fcf1;
             padding: 15px;
             border-radius: 10px;
-            transition: opacity 3s ease, border-color 3s ease, background 3s ease, max-height 1s ease, padding 1s ease, margin 1s ease;
-            max-height: 400px;
-            opacity: 1;
-            overflow: hidden;
+            transition: opacity 1s ease, max-height 1s ease, margin 1s ease, padding 1s ease;
         }
         .puzzle-section.fade-out {
             opacity: 0;
-            border-color: transparent;
-            background: rgba(11, 12, 16, 0);
             max-height: 0;
-            padding-top: 0;
-            padding-bottom: 0;
-            margin-top: 0;
-            pointer-events: none;
+            margin: 0;
+            padding: 0;
+            border: none;
+            overflow: hidden;
         }
-
         .puzzle-title {
             color: #66fcf1;
             font-size: 0.95em;
             margin-bottom: 10px;
             letter-spacing: 0.5px;
             font-style: italic;
-            transition: opacity 2s ease;
         }
         .puzzle-board {
             display: grid;
@@ -154,13 +156,20 @@
             border: 2px solid #66fcf1;
             border-radius: 6px;
             background: #0b0c10;
-            transition: opacity 3s ease;
+            transition: border 0.3s ease, gap 0.3s ease;
+        }
+        .puzzle-board.solved-board {
+            border: none;
+            gap: 0px;
         }
         .puzzle-tile {
             background-size: 240px 240px;
             cursor: pointer;
             border: 1px solid rgba(102, 252, 241, 0.3);
-            transition: all 0.3s ease;
+            transition: border 0.3s ease;
+        }
+        .puzzle-board.solved-board .puzzle-tile {
+            border: none !important;
         }
         .puzzle-tile.empty {
             background: #1f2833 !important;
@@ -176,15 +185,6 @@
             line-height: 1.2;
             font-style: italic;
             box-shadow: inset 0 0 8px rgba(102, 252, 241, 0.2);
-        }
-        .puzzle-tile.completed-piece {
-            border: none;
-            cursor: default;
-            animation: fadeInPiece 0.6s ease-in-out;
-        }
-        @keyframes fadeInPiece {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
         }
 
         .puzzle-btn {
@@ -203,30 +203,28 @@
             color: #0b0c10;
         }
 
+        /* Bright Rose Pink Special Win Message */
         #puzzleMessage {
-            font-size: 1.05em;
-            color: #ff4081;
+            font-size: 1.15em;
+            color: #ff2a85;
             margin-top: 15px;
             font-family: 'Georgia', serif;
             font-style: italic;
             font-weight: bold;
             line-height: 1.6;
-            text-shadow: 0 0 10px rgba(255, 64, 129, 0.4);
-            min-height: 30px;
-            padding: 12px 15px;
-            background: #0b0c10;
-            border: 1px solid #ff4081;
+            text-shadow: 0 0 12px rgba(255, 42, 133, 0.5);
+            padding: 15px;
+            background: rgba(11, 12, 16, 0.9);
+            border: 1px solid #ff2a85;
             border-radius: 8px;
-            box-shadow: 0 0 15px rgba(255, 64, 129, 0.2);
+            box-shadow: 0 0 20px rgba(255, 42, 133, 0.3);
             display: none;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
         }
         #puzzleMessage.show-win {
             display: block;
-            animation: fadeInMsg 0.8s ease-in-out;
-        }
-        @keyframes fadeInMsg {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+            opacity: 1;
         }
 
         /* HEART SHAPE COUNTDOWN BOX */
@@ -304,10 +302,10 @@
             background-color: #45a29e;
             transform: scale(1.05);
         }
-
-        /* LETTER SECTIONS FADE IN SEQUENCE */
         .message-content {
             display: none;
+            opacity: 0;
+            transition: opacity 2s ease-in;
             text-align: left;
             margin-top: 25px;
             position: relative;
@@ -315,18 +313,8 @@
         }
         .message-content.show {
             display: block;
-        }
-
-        .fade-element {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 2s ease, transform 2s ease;
-        }
-        .fade-element.visible {
             opacity: 1;
-            transform: translateY(0);
         }
-
         h1 {
             color: #66fcf1;
             font-size: 2em;
@@ -376,9 +364,11 @@
         <div class="puzzle-section" id="puzzleSection">
             <div class="puzzle-title" id="puzzleTitle">A beautiful picture 💓waiting for its pieces to meet 🌸</div>
             <div class="puzzle-board" id="puzzleBoard"></div>
-            <button class="puzzle-btn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
-            <div id="puzzleMessage"></div>
+            <button class="puzzle-btn" id="shuffleBtn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
         </div>
+
+        <!-- Rose Pink Win Message / Love Letter Intro -->
+        <div id="puzzleMessage">And there she is the one my heart has always been looking for ❤️ my pieces of heaven i never want to lose ur the beautiful part of my life 💖</div>
         
         <!-- Heart-Shaped Countdown -->
         <div class="heart-countdown">
@@ -391,19 +381,19 @@
         <button class="reveal-btn" id="revealBtn" onclick="revealMessage()">Tap to Open My Heart ✨</button>
 
         <div class="message-content" id="messageContent">
-            <h1 class="fade-element" id="letterTitle">To My Beloved Enuye</h1>
+            <h1>To My Beloved Enuye</h1>
             
-            <div class="old-arabic-style fade-element" id="para1">
+            <div class="old-arabic-style">
                 "In the garden of my life, you are the rarest bloom that ever graced my soul. Before you, my world was silent; with you, every beat of my heart is a celebration of your existence."
             </div>
 
-            <p class="fade-element" id="para2">Happy birthday enu to the gurl who hold my entire heart everyday with you feels like a special gift zare gn it's more special bc its ur special day.</p>
+            <p>Happy birthday enu to the gurl who hold my entire heart everyday with you feels like a special gift zare gn it's more special bc its ur special day.</p>
             
-            <p class="fade-element" id="para3">I truly wish we were close right now so I could shower you with surprise gifts to give back even a fraction of the happiness you bring me every single day just by talking to me I promise you enu inshallah like the day will come when all of these quiet wishes become our reality.</p>
+            <p>I truly wish we were close right now so I could shower you with surprise gifts to give back even a fraction of the happiness you bring me every single day just by talking to me I promise you enu inshallah like the day will come when all of these quiet wishes become our reality.</p>
             
-            <p class="fade-element" id="para4" style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you aysel I love you today tomorrow and for every day for the rest of my life♥</p>
+            <p style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you aysel I love you today tomorrow and for every day for the rest of my life♥</p>
             
-            <div class="signature fade-element" id="signature">Always yours, Khalid ❤️</div>
+            <div class="signature">Always yours, Khalid ❤️</div>
         </div>
     </div>
 
@@ -411,7 +401,6 @@
         let selectedPhoto = "";
         let isPuzzleSolved = false;
 
-        // Function to test which image actually exists and loads successfully
         function loadValidPhoto() {
             const randNum = Math.floor(Math.random() * 3) + 1;
             const candidates = [`enuye${randNum}.jpg`, `enuye${randNum}.JPG`, `enuye${randNum}.jpeg`];
@@ -440,7 +429,6 @@
             tryNext();
         }
 
-        // PUZZLE LOGIC (3x3 Sliding Puzzle)
         let boardState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
         let winningState = [0, 1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -461,9 +449,6 @@
                     tile.style.backgroundImage = `url('${selectedPhoto}')`;
                     tile.style.backgroundSize = '240px 240px';
                     tile.style.backgroundPosition = `-${col * 80}px -${row * 80}px`;
-                    if (isPuzzleSolved) {
-                        tile.classList.add('completed-piece');
-                    }
                 }
                 
                 if (!isPuzzleSolved) {
@@ -491,9 +476,10 @@
 
         function shufflePuzzle() {
             isPuzzleSolved = false;
-            const msgBox = document.getElementById('puzzleMessage');
-            msgBox.innerHTML = "";
-            msgBox.classList.remove('show-win');
+            const board = document.getElementById('puzzleBoard');
+            board.classList.remove('solved-board');
+            document.getElementById('shuffleBtn').style.display = 'inline-block';
+            document.getElementById('puzzleTitle').style.display = 'block';
 
             for (let i = 0; i < 100; i++) {
                 const emptyPos = boardState.indexOf(8);
@@ -517,50 +503,33 @@
             const isWon = boardState.every((val, idx) => val === winningState[idx]);
             if (isWon) {
                 isPuzzleSolved = true;
-                initPuzzle(); // Seamlessly completes the full picture
                 
-                const msgBox = document.getElementById('puzzleMessage');
-                msgBox.innerHTML = "✨ There is she the most beautiful piece of my world ♥️ a pieces of heaven i never want to lose ✨";
-                msgBox.classList.add('show-win');
+                // Instantly make grid lines disappear and restore the final piece
+                const board = document.getElementById('puzzleBoard');
+                board.classList.add('solved-board');
+                initPuzzle();
+                
+                // Hide shuffle button and title text immediately
+                document.getElementById('shuffleBtn').style.display = 'none';
+                document.getElementById('puzzleTitle').style.display = 'none';
 
-                // Wait 15 seconds, then slowly fade away the puzzle section and lines, and reveal the letter lines sequentially
+                // Keep complete picture pristine on screen for 10 seconds, then fade out photo and puzzle section
                 setTimeout(() => {
-                    const puzzleSec = document.getElementById('puzzleSection');
-                    puzzleSec.classList.add('fade-out');
-
-                    // Automatically trigger card movement and letter display sequence
+                    document.getElementById('photoFrame').classList.add('fade-out');
+                    document.getElementById('puzzleSection').classList.add('fade-out');
+                    
+                    // After photo fades out, smoothly fade in the rose pink love message
                     setTimeout(() => {
-                        const container = document.getElementById('cardContainer');
-                        const message = document.getElementById('messageContent');
-                        const btn = document.getElementById('revealBtn');
-                        const floatingHeart = document.getElementById('floatingHeart');
-                        
-                        container.classList.add('move-up');
-                        floatingHeart.style.animation = 'none'; 
-                        void floatingHeart.offsetWidth; 
-                        floatingHeart.style.animation = null; 
+                        const msgBox = document.getElementById('puzzleMessage');
+                        msgBox.classList.add('show-win');
+                    }, 1000);
 
-                        btn.style.display = 'none';
-                        message.classList.add('show');
-
-                        // Staggered line-by-line appearance
-                        setTimeout(() => document.getElementById('para1').classList.add('visible'), 300);
-                        setTimeout(() => document.getElementById('para2').classList.add('visible'), 1200);
-                        setTimeout(() => document.getElementById('para3').classList.add('visible'), 2100);
-                        setTimeout(() => document.getElementById('para4').classList.add('visible'), 3000);
-                        setTimeout(() => document.getElementById('letterTitle').classList.add('visible'), 3900);
-                        setTimeout(() => document.getElementById('signature').classList.add('visible'), 4800);
-
-                    }, 2000); // Wait slightly as the puzzle fades
-
-                }, 15000); // 15 seconds display time
+                }, 10000);
             }
         }
 
-        // Initialize photo loading & puzzle on startup
         loadValidPhoto();
 
-        // Generate floating background hearts
         function createHeart() {
             const heartsBg = document.getElementById('heartsBg');
             const heart = document.createElement('div');
@@ -576,7 +545,6 @@
         }
         setInterval(createHeart, 400);
 
-        // LIVE COUNTDOWN TO JULY 22
         function updateCountdown() {
             const now = new Date();
             let year = now.getFullYear();
@@ -609,15 +577,12 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // Manual button click fallback just in case she wants to open it immediately
         function revealMessage() {
             const container = document.getElementById('cardContainer');
             const message = document.getElementById('messageContent');
             const btn = document.getElementById('revealBtn');
             const floatingHeart = document.getElementById('floatingHeart');
-            const puzzleSec = document.getElementById('puzzleSection');
             
-            puzzleSec.classList.add('fade-out');
             container.classList.add('move-up');
             
             floatingHeart.style.animation = 'none'; 
@@ -625,14 +590,9 @@
             floatingHeart.style.animation = null; 
 
             btn.style.display = 'none';
-            message.classList.add('show');
-            
-            document.getElementById('para1').classList.add('visible');
-            document.getElementById('para2').classList.add('visible');
-            document.getElementById('para3').classList.add('visible');
-            document.getElementById('para4').classList.add('visible');
-            document.getElementById('letterTitle').classList.add('visible');
-            document.getElementById('signature').classList.add('visible');
+            setTimeout(() => {
+                message.classList.add('show');
+            }, 800);
         }
     </script>
 
