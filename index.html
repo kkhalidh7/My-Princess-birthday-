@@ -61,7 +61,7 @@
             transform: translateY(-10%);
         }
 
-        /* Photo Frame */
+        /* Photo Frame & Cinematic Fade Overlay */
         .photo-frame {
             width: 100%;
             max-height: 450px;
@@ -70,24 +70,34 @@
             border: 2px solid #66fcf1;
             position: relative;
             background: #0b0c10;
-            transition: filter 1.5s ease, opacity 1.5s ease;
+            transition: opacity 1.5s ease, transform 1.5s ease;
         }
+        .photo-frame.cinematic-fade {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        /* Heart-shaped cinematic overlay mask */
+        .photo-frame::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255, 64, 129, 0.4) 0%, rgba(11, 12, 16, 0.95) 80%);
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            pointer-events: none;
+            z-index: 5;
+        }
+        .photo-frame.cinematic-fade::after {
+            opacity: 1;
+        }
+
         img {
             width: 100%;
             height: auto;
             max-height: 450px;
             object-fit: contain;
             display: block;
-        }
-
-        /* CINEMATIC HEART FADE EFFECT WHEN PUZZLE IS WON */
-        .photo-frame.cinematic-fade {
-            animation: heartDarkenMask 3s forwards ease-in-out;
-        }
-        @keyframes heartDarkenMask {
-            0% { filter: brightness(1); }
-            40% { filter: brightness(1.3) drop-shadow(0 0 25px #ff4081); }
-            100% { filter: brightness(0.1); opacity: 0.2; }
         }
 
         .cutting-cake img {
@@ -108,8 +118,14 @@
             border: 1px dashed #66fcf1;
             padding: 15px;
             border-radius: 10px;
-            transition: opacity 1s ease;
+            transition: opacity 1s ease, transform 1s ease;
         }
+        .puzzle-section.fade-out {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+
         .puzzle-title {
             color: #66fcf1;
             font-size: 0.95em;
@@ -128,21 +144,24 @@
             border: 2px solid #66fcf1;
             border-radius: 6px;
             background: #0b0c10;
-            transition: border 0.5s ease;
+            transition: border 0.3s ease, gap 0.3s ease;
         }
-        .puzzle-board.no-lines {
-            border: none;
-            gap: 0px;
+        /* When solved, grid lines and gaps disappear instantly */
+        .puzzle-board.solved-seamless {
+            border: none !important;
+            gap: 0px !important;
         }
+
         .puzzle-tile {
             background-size: 240px 240px;
             cursor: pointer;
             border: 1px solid rgba(102, 252, 241, 0.3);
             transition: border 0.3s ease;
         }
-        .puzzle-board.no-lines .puzzle-tile {
+        .puzzle-board.solved-seamless .puzzle-tile {
             border: none !important;
         }
+
         .puzzle-tile.empty {
             background: #1f2833 !important;
             border: 1px solid rgba(102, 252, 241, 0.5);
@@ -157,10 +176,6 @@
             line-height: 1.2;
             font-style: italic;
             box-shadow: inset 0 0 8px rgba(102, 252, 241, 0.2);
-        }
-        .puzzle-tile.completed-piece {
-            border: none;
-            cursor: default;
         }
 
         .puzzle-btn {
@@ -179,31 +194,30 @@
             color: #0b0c10;
         }
 
-        /* BRIGHT ROSE PINK WIN MESSAGE CARD */
+        /* Fully Visible, Highlighted Rose Pink Win Statement */
         #puzzleMessage {
-            font-size: 1.1em;
-            color: #ff2a75;
-            margin-top: 20px;
+            font-size: 1.15em;
+            color: #ff2a85;
+            margin-top: 15px;
             font-family: 'Georgia', serif;
             font-style: italic;
             font-weight: bold;
-            line-height: 1.7;
-            text-shadow: 0 0 12px rgba(255, 42, 117, 0.6);
+            line-height: 1.8;
+            text-shadow: 0 0 15px rgba(255, 42, 133, 0.6);
             padding: 18px 20px;
-            background: #0b0c10;
-            border: 2px solid #ff2a75;
+            background: rgba(11, 12, 16, 0.95);
+            border: 2px solid #ff2a85;
             border-radius: 12px;
-            box-shadow: 0 0 25px rgba(255, 42, 117, 0.3);
+            box-shadow: 0 0 25px rgba(255, 42, 133, 0.3);
             display: none;
-            word-wrap: break-word;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 1.5s ease, transform 1.5s ease;
         }
         #puzzleMessage.show-win {
             display: block;
-            animation: fadeInMsg 1s ease-in-out;
-        }
-        @keyframes fadeInMsg {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* HEART SHAPE COUNTDOWN BOX */
@@ -281,10 +295,12 @@
             background-color: #45a29e;
             transform: scale(1.05);
         }
+
         .message-content {
             display: none;
             opacity: 0;
-            transition: opacity 2s ease-in;
+            transform: translateY(15px);
+            transition: opacity 1.5s ease, transform 1.5s ease;
             text-align: left;
             margin-top: 25px;
             position: relative;
@@ -293,6 +309,7 @@
         .message-content.show {
             display: block;
             opacity: 1;
+            transform: translateY(0);
         }
         h1 {
             color: #66fcf1;
@@ -342,10 +359,10 @@
             <div class="puzzle-board" id="puzzleBoard"></div>
             <button class="puzzle-btn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
         </div>
-
-        <!-- Fully Visible Rose Pink Win Message Card -->
-        <div id="puzzleMessage"></div>
         
+        <!-- Rose Pink Win Message (Appears after puzzle is solved) -->
+        <div id="puzzleMessage"></div>
+
         <!-- Heart-Shaped Countdown -->
         <div class="heart-countdown">
             <div class="countdown-inner">
@@ -377,7 +394,6 @@
         let selectedPhoto = "";
         let isPuzzleSolved = false;
 
-        // Function to test which image actually exists and loads successfully
         function loadValidPhoto() {
             const randNum = Math.floor(Math.random() * 3) + 1;
             const candidates = [`enuye${randNum}.jpg`, `enuye${randNum}.JPG`, `enuye${randNum}.jpeg`];
@@ -442,7 +458,7 @@
             const row = Math.floor(pos / 3);
             const col = pos % 3;
             const emptyRow = Math.floor(emptyPos / 3);
-            const emptyCol = emptyPos % 3;
+            const emptyCol = emptyPos emptyPos;
 
             if (Math.abs(row - emptyRow) + Math.abs(col - emptyCol) === 1) {
                 boardState[emptyPos] = boardState[pos];
@@ -457,9 +473,10 @@
             const msgBox = document.getElementById('puzzleMessage');
             msgBox.innerHTML = "";
             msgBox.classList.remove('show-win');
+            document.getElementById('puzzleBoard').classList.remove('solved-seamless');
             document.getElementById('photoFrame').classList.remove('cinematic-fade');
-            document.getElementById('puzzleBoard').classList.remove('no-lines');
             document.getElementById('puzzleSection').style.opacity = '1';
+            document.getElementById('puzzleSection').style.transform = 'scale(1)';
 
             for (let i = 0; i < 100; i++) {
                 const emptyPos = boardState.indexOf(8);
@@ -483,41 +500,26 @@
             const isWon = boardState.every((val, idx) => val === winningState[idx]);
             if (isWon) {
                 isPuzzleSolved = true;
+                // Instantly transform empty tile into final piece and remove grid lines
+                initPuzzle();
+                document.getElementById('puzzleBoard').classList.add('solved-seamless');
                 
-                // Immediately remove grid lines and complete the picture
-                const board = document.getElementById('puzzleBoard');
-                board.innerHTML = '';
-                for (let i = 0; i < 9; i++) {
-                    const row = Math.floor(i / 3);
-                    const col = i % 3;
-                    const tile = document.createElement('div');
-                    tile.className = 'puzzle-tile completed-piece';
-                    tile.style.backgroundImage = `url('${selectedPhoto}')`;
-                    tile.style.backgroundSize = '240px 240px';
-                    tile.style.backgroundPosition = `-${col * 80}px -${row * 80}px`;
-                    board.appendChild(tile);
-                }
-                board.classList.add('no-lines');
-
-                // Cinematic transition: picture stays 3 seconds, fades with heart effect
-                const photoFrame = document.getElementById('photoFrame');
-                photoFrame.classList.add('cinematic-fade');
-
+                // Keep completed picture on screen for 3 seconds, then start cinematic fade
                 setTimeout(() => {
-                    document.getElementById('puzzleSection').style.opacity = '0';
-                    setTimeout(() => {
-                        document.getElementById('puzzleSection').style.display = 'none';
-                    }, 1000);
+                    document.getElementById('photoFrame').classList.add('cinematic-fade');
+                    document.getElementById('puzzleSection').classList.add('fade-out');
 
-                    // Show the bright rose pink message
-                    const msgBox = document.getElementById('puzzleMessage');
-                    msgBox.innerHTML = "And there she is the one my heart has always been looking for ❤️️ my pieces of heaven i never want to lose ur the beautiful part of my life 💖";
-                    msgBox.classList.add('show-win');
+                    // After fade, show the gorgeous rose pink message
+                    setTimeout(() => {
+                        const msgBox = document.getElementById('puzzleMessage');
+                        msgBox.innerHTML = "And there she is the one my heart has always been looking for ❤️ my pieces of heaven i never want to lose ur the beautiful part of my life 💖";
+                        msgBox.classList.add('show-win');
+                    }, 1200);
+
                 }, 3000);
             }
         }
 
-        // Initialize photo loading & puzzle on startup
         loadValidPhoto();
 
         // Generate floating background hearts
@@ -562,9 +564,7 @@
             } else {
                 countdownTitle.innerHTML = "Until July 22";
                 timerDisplay.innerHTML = `${days}d ${hours}h ${minutes}m`;
-                if (!isPuzzleSolved) {
-                    photoFrame.classList.remove('cutting-cake');
-                }
+                photoFrame.classList.remove('cutting-cake');
             }
         }
 
