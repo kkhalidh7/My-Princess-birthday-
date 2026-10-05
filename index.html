@@ -57,9 +57,8 @@
             transition: transform 0.5s ease-in-out;
         }
 
-        /* Photo Frame Wrapper */
-        .photo-area {
-            transition: opacity 1s ease, transform 1s ease;
+        .container.move-up {
+            transform: translateY(-10%);
         }
 
         /* Photo Frame */
@@ -71,6 +70,7 @@
             border: 2px solid #66fcf1;
             position: relative;
             background: #0b0c10;
+            transition: filter 1.5s ease, opacity 1.5s ease;
         }
         img {
             width: 100%;
@@ -78,7 +78,16 @@
             max-height: 450px;
             object-fit: contain;
             display: block;
-            transition: filter 1s ease;
+        }
+
+        /* CINEMATIC HEART FADE EFFECT WHEN PUZZLE IS WON */
+        .photo-frame.cinematic-fade {
+            animation: heartDarkenMask 3s forwards ease-in-out;
+        }
+        @keyframes heartDarkenMask {
+            0% { filter: brightness(1); }
+            40% { filter: brightness(1.3) drop-shadow(0 0 25px #ff4081); }
+            100% { filter: brightness(0.1); opacity: 0.2; }
         }
 
         .cutting-cake img {
@@ -121,8 +130,8 @@
             background: #0b0c10;
             transition: border 0.5s ease;
         }
-        .puzzle-board.solved-board {
-            border: 2px solid transparent;
+        .puzzle-board.no-lines {
+            border: none;
             gap: 0px;
         }
         .puzzle-tile {
@@ -131,7 +140,7 @@
             border: 1px solid rgba(102, 252, 241, 0.3);
             transition: border 0.3s ease;
         }
-        .puzzle-board.solved-board .puzzle-tile {
+        .puzzle-board.no-lines .puzzle-tile {
             border: none !important;
         }
         .puzzle-tile.empty {
@@ -148,6 +157,10 @@
             line-height: 1.2;
             font-style: italic;
             box-shadow: inset 0 0 8px rgba(102, 252, 241, 0.2);
+        }
+        .puzzle-tile.completed-piece {
+            border: none;
+            cursor: default;
         }
 
         .puzzle-btn {
@@ -166,66 +179,31 @@
             color: #0b0c10;
         }
 
-        /* GLOWING HEART-SHAPED MESSAGE CARD (TOP SPACE) */
+        /* BRIGHT ROSE PINK WIN MESSAGE CARD */
         #puzzleMessage {
-            position: relative;
-            width: 100%;
-            max-width: 420px;
-            min-height: 320px;
-            margin: 0 auto 20px auto;
-            background: linear-gradient(135deg, #1f2833, #0b0c10);
-            transform: rotate(-45deg) scale(0.9);
-            border: 2px solid #ff2a85;
-            box-shadow: 0 0 25px rgba(255, 42, 133, 0.4);
-            display: none;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out, transform 1s ease-in-out;
-            z-index: 10;
-        }
-        #puzzleMessage::before,
-        #puzzleMessage::after {
-            content: "";
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: inherit;
-            border-radius: 50%;
-            border: 2px solid #ff2a85;
-        }
-        #puzzleMessage::before {
-            top: -50%;
-            left: 0;
-            border-bottom: none;
-            border-right: none;
-        }
-        #puzzleMessage::after {
-            left: 50%;
-            top: 0;
-            border-bottom: none;
-            border-left: none;
-        }
-        #puzzleMessage.show-win {
-            display: flex;
-            opacity: 1;
-            transform: rotate(-45deg) scale(1);
-        }
-
-        .heart-text-inner {
-            position: absolute;
-            transform: rotate(45deg);
-            z-index: 15;
-            text-align: center;
-            width: 290px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(45deg);
-            font-size: 1.05em;
-            color: #ff2a85;
+            font-size: 1.1em;
+            color: #ff2a75;
+            margin-top: 20px;
             font-family: 'Georgia', serif;
             font-style: italic;
             font-weight: bold;
-            line-height: 1.6;
-            text-shadow: 0 0 12px rgba(255, 42, 133, 0.6);
+            line-height: 1.7;
+            text-shadow: 0 0 12px rgba(255, 42, 117, 0.6);
+            padding: 18px 20px;
+            background: #0b0c10;
+            border: 2px solid #ff2a75;
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(255, 42, 117, 0.3);
+            display: none;
+            word-wrap: break-word;
+        }
+        #puzzleMessage.show-win {
+            display: block;
+            animation: fadeInMsg 1s ease-in-out;
+        }
+        @keyframes fadeInMsg {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* HEART SHAPE COUNTDOWN BOX */
@@ -303,7 +281,6 @@
             background-color: #45a29e;
             transform: scale(1.05);
         }
-        
         .message-content {
             display: none;
             opacity: 0;
@@ -354,23 +331,20 @@
     <div class="hearts-bg" id="heartsBg"></div>
 
     <div class="container" id="cardContainer">
-        <!-- Photo and Puzzle Area (Fades & slides up on win) -->
-        <div class="photo-area" id="photoAreaContainer">
-            <div class="photo-frame" id="photoFrame">
-                <img id="mainPhoto" src="" alt="Enuye">
-            </div>
-
-            <div class="puzzle-section" id="puzzleSectionContainer">
-                <div class="puzzle-title" id="puzzleTitle">A beautiful picture 💓waiting for its pieces to meet 🌸</div>
-                <div class="puzzle-board" id="puzzleBoard"></div>
-                <button class="puzzle-btn" id="shuffleBtn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
-            </div>
+        <!-- Photo Frame -->
+        <div class="photo-frame" id="photoFrame">
+            <img id="mainPhoto" src="" alt="Enuye">
         </div>
 
-        <!-- Glowing Heart-Shaped Message Card that Appears in Top Space -->
-        <div id="puzzleMessage">
-            <div class="heart-text-inner" id="heartTextContent"></div>
+        <!-- Sliding Picture Puzzle Game -->
+        <div class="puzzle-section" id="puzzleSection">
+            <div class="puzzle-title" id="puzzleTitle">A beautiful picture 💓waiting for its pieces to meet 🌸</div>
+            <div class="puzzle-board" id="puzzleBoard"></div>
+            <button class="puzzle-btn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
         </div>
+
+        <!-- Fully Visible Rose Pink Win Message Card -->
+        <div id="puzzleMessage"></div>
         
         <!-- Heart-Shaped Countdown -->
         <div class="heart-countdown">
@@ -393,7 +367,7 @@
             
             <p>I truly wish we were close right now so I could shower you with surprise gifts to give back even a fraction of the happiness you bring me every single day just by talking to me I promise you enu inshallah like the day will come when all of these quiet wishes become our reality.</p>
             
-            <p style="text-align: center; font-weight: bold; color: #ff2a85; margin-top: 25px; text-shadow: 0 0 10px rgba(255, 42, 133, 0.4);">I love you aysel I love you today tomorrow and for every day for the rest of my life ♥</p>
+            <p style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you aysel I love you today tomorrow and for every day for the rest of my life♥</p>
             
             <div class="signature">Always yours, Khalid ❤️</div>
         </div>
@@ -403,6 +377,7 @@
         let selectedPhoto = "";
         let isPuzzleSolved = false;
 
+        // Function to test which image actually exists and loads successfully
         function loadValidPhoto() {
             const randNum = Math.floor(Math.random() * 3) + 1;
             const candidates = [`enuye${randNum}.jpg`, `enuye${randNum}.JPG`, `enuye${randNum}.jpeg`];
@@ -479,13 +454,12 @@
 
         function shufflePuzzle() {
             isPuzzleSolved = false;
-            const board = document.getElementById('puzzleBoard');
-            board.classList.remove('solved-board');
-            
             const msgBox = document.getElementById('puzzleMessage');
+            msgBox.innerHTML = "";
             msgBox.classList.remove('show-win');
-            document.getElementById('photoAreaContainer').style.opacity = '1';
-            document.getElementById('photoAreaContainer').style.display = 'block';
+            document.getElementById('photoFrame').classList.remove('cinematic-fade');
+            document.getElementById('puzzleBoard').classList.remove('no-lines');
+            document.getElementById('puzzleSection').style.opacity = '1';
 
             for (let i = 0; i < 100; i++) {
                 const emptyPos = boardState.indexOf(8);
@@ -510,29 +484,40 @@
             if (isWon) {
                 isPuzzleSolved = true;
                 
-                // 1. Lines disappear immediately
+                // Immediately remove grid lines and complete the picture
                 const board = document.getElementById('puzzleBoard');
-                board.classList.add('solved-board');
-                initPuzzle(); 
+                board.innerHTML = '';
+                for (let i = 0; i < 9; i++) {
+                    const row = Math.floor(i / 3);
+                    const col = i % 3;
+                    const tile = document.createElement('div');
+                    tile.className = 'puzzle-tile completed-piece';
+                    tile.style.backgroundImage = `url('${selectedPhoto}')`;
+                    tile.style.backgroundSize = '240px 240px';
+                    tile.style.backgroundPosition = `-${col * 80}px -${row * 80}px`;
+                    board.appendChild(tile);
+                }
+                board.classList.add('no-lines');
 
-                // 2. Stay normal for 3 seconds, then picture and puzzle area fade out & disappear
+                // Cinematic transition: picture stays 3 seconds, fades with heart effect
+                const photoFrame = document.getElementById('photoFrame');
+                photoFrame.classList.add('cinematic-fade');
+
                 setTimeout(() => {
-                    const photoArea = document.getElementById('photoAreaContainer');
-                    photoArea.style.opacity = '0';
-                    
+                    document.getElementById('puzzleSection').style.opacity = '0';
                     setTimeout(() => {
-                        photoArea.style.display = 'none';
-                        
-                        // 3. Heart-shaped text container fades into the top space
-                        const msgBox = document.getElementById('puzzleMessage');
-                        const heartText = document.getElementById('heartTextContent');
-                        heartText.innerHTML = "And there she is the one my heart has always been looking for ❤️ my pieces of heaven i never want to lose ur the beautiful part of my life 💖";
-                        msgBox.classList.add('show-win');
+                        document.getElementById('puzzleSection').style.display = 'none';
                     }, 1000);
+
+                    // Show the bright rose pink message
+                    const msgBox = document.getElementById('puzzleMessage');
+                    msgBox.innerHTML = "And there she is the one my heart has always been looking for ❤️️ my pieces of heaven i never want to lose ur the beautiful part of my life 💖";
+                    msgBox.classList.add('show-win');
                 }, 3000);
             }
         }
 
+        // Initialize photo loading & puzzle on startup
         loadValidPhoto();
 
         // Generate floating background hearts
@@ -577,7 +562,9 @@
             } else {
                 countdownTitle.innerHTML = "Until July 22";
                 timerDisplay.innerHTML = `${days}d ${hours}h ${minutes}m`;
-                photoFrame.classList.remove('cutting-cake');
+                if (!isPuzzleSolved) {
+                    photoFrame.classList.remove('cutting-cake');
+                }
             }
         }
 
