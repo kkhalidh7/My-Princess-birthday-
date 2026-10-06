@@ -20,7 +20,7 @@
             position: relative;
         }
 
-        /* Floating Hearts Animation Background */
+        /* Floating Background Hearts */
         .hearts-bg {
             position: absolute;
             top: 0;
@@ -42,6 +42,18 @@
             0% { transform: translateY(0) scale(0.8); opacity: 0; }
             50% { opacity: 0.8; }
             100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
+        }
+
+        /* Celebration Confetti & Kiss Emojis */
+        .celebration-particle {
+            position: absolute;
+            z-index: 100;
+            pointer-events: none;
+            animation: fallParticle 3s linear forwards;
+        }
+        @keyframes fallParticle {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
 
         .container {
@@ -77,7 +89,6 @@
             transform: scale(0.95);
         }
 
-        /* Heart-shaped cinematic overlay mask */
         .photo-frame::after {
             content: "";
             position: absolute;
@@ -146,7 +157,6 @@
             background: #0b0c10;
             transition: border 0.3s ease, gap 0.3s ease;
         }
-        /* When solved, grid lines and gaps disappear instantly */
         .puzzle-board.solved-seamless {
             border: none !important;
             gap: 0px !important;
@@ -331,14 +341,37 @@
             margin-bottom: 25px;
             font-size: 1.2em;
         }
-        .signature {
+
+        /* HEART SHAPED LOVE LETTER CONTAINER */
+        .heart-letter-container {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            margin: 20px auto;
+            padding: 40px 20px;
+            background: rgba(11, 12, 16, 0.85);
+            border: 2px solid #ff4081;
+            border-radius: 30% 30% 50% 50% / 30% 30% 60% 60%;
+            box-shadow: 0 0 25px rgba(255, 64, 129, 0.3);
+            text-align: center;
+        }
+        .heart-letter-text {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.82em;
+            color: #ff94b8;
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+            white-space: pre-line;
+            text-align: center;
+        }
+        .heart-letter-signature {
+            margin-top: 15px;
             text-align: center;
             color: #66fcf1;
             font-style: italic;
             font-size: 1.1em;
-            margin-top: 20px;
-            line-height: 1.6;
             letter-spacing: 0.5px;
+            font-family: 'Georgia', serif;
         }
     </style>
 </head>
@@ -360,7 +393,7 @@
             <button class="puzzle-btn" onclick="shufflePuzzle()">Shuffle Puzzle</button>
         </div>
         
-        <!-- Rose Pink Win Message (Appears after puzzle is solved) -->
+        <!-- Rose Pink Win Message -->
         <div id="puzzleMessage"></div>
 
         <!-- Heart-Shaped Countdown -->
@@ -384,9 +417,27 @@
             
             <p>I truly wish we were close right now so I could shower you with surprise gifts to give back even a fraction of the happiness you bring me every single day just by talking to me I promise you enu inshallah like the day will come when all of these quiet wishes become our reality.</p>
             
-            <p style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you aysel I love you today tomorrow and for every day for the rest of my life♥</p>
+            <!-- Heart-Shaped Typography Letter Section -->
+            <div class="heart-letter-container">
+                <div class="heart-letter-text">
+You gave me a shoulder when I needed it
+You showed the love when I wasn't feeling it
+You helped me fight when I was giving in
+You made me laugh when I was losing it
+Cause you are, you are
+The reason why I'm still hanging on
+Cause you are, you are
+The reason why my head is still above water
+And if I could I'd get you the moon
+I'd give it to you
+And if death was coming for you
+I'd give my life for you
+                </div>
+            </div>
+
+            <p style="text-align: center; font-weight: bold; color: #66fcf1; margin-top: 25px;">I love you aysel I love you today tomorrow and for every day for the rest of my life ♥️</p>
             
-            <div class="signature">Always yours, Khalid ❤️</div>
+            <div class="heart-letter-signature">Always yours, Khalid ❤️</div>
         </div>
     </div>
 
@@ -458,7 +509,7 @@
             const row = Math.floor(pos / 3);
             const col = pos % 3;
             const emptyRow = Math.floor(emptyPos / 3);
-            const emptyCol = emptyPos emptyPos;
+            const emptyCol = emptyPos % 3;
 
             if (Math.abs(row - emptyRow) + Math.abs(col - emptyCol) === 1) {
                 boardState[emptyPos] = boardState[pos];
@@ -496,20 +547,40 @@
             initPuzzle();
         }
 
+        // Trigger Confetti and Kiss Emojis Celebration when Puzzle is Won
+        function triggerCelebration() {
+            const symbols = ['🌸', '💖', '💕', '😘', '❤️', '✨'];
+            for (let i = 0; i < 35; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'celebration-particle';
+                particle.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+                particle.style.left = Math.random() * window.innerWidth + 'px';
+                particle.style.top = '-30px';
+                particle.style.fontSize = (Math.random() * 15 + 15) + 'px';
+                particle.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                particle.style.animationDelay = (Math.random() * 0.8) + 's';
+                document.body.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 4000);
+            }
+        }
+
         function checkWin() {
             const isWon = boardState.every((val, idx) => val === winningState[idx]);
             if (isWon) {
                 isPuzzleSolved = true;
-                // Instantly transform empty tile into final piece and remove grid lines
                 initPuzzle();
                 document.getElementById('puzzleBoard').classList.add('solved-seamless');
                 
-                // Keep completed picture on screen for 3 seconds, then start cinematic fade
+                // Trigger confetti & kiss emojis celebration instantly
+                triggerCelebration();
+                
                 setTimeout(() => {
                     document.getElementById('photoFrame').classList.add('cinematic-fade');
                     document.getElementById('puzzleSection').classList.add('fade-out');
 
-                    // After fade, show the gorgeous rose pink message
                     setTimeout(() => {
                         const msgBox = document.getElementById('puzzleMessage');
                         msgBox.innerHTML = "And there she is the one my heart has always been looking for ❤️ my pieces of heaven i never want to lose ur the beautiful part of my life 💖";
