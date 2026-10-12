@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To My Beloved Enuye</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Georgia&display=swap');
+
         body {
             background-color: #0b0c10;
             color: #c5c6c7;
@@ -20,7 +22,7 @@
             position: relative;
         }
 
-        /* Floating Hearts Animation Background */
+        /* Floating Hearts Background */
         .hearts-bg {
             position: absolute;
             top: 0;
@@ -44,17 +46,27 @@
             100% { transform: translateY(-100vh) scale(1.2); opacity: 0; }
         }
 
-        /* Confetti Burst Hearts */
+        /* MAGICAL CONFETTI CANNON EFFECT */
         .confetti-heart {
-            position: absolute;
-            z-index: 99;
-            font-size: 24px;
-            animation: confettiFall 2.5s ease-out forwards;
+            position: fixed;
+            z-index: 999;
             pointer-events: none;
+            animation: confettiFly var(--duration) ease-out forwards;
+            filter: drop-shadow(0 0 6px rgba(255, 64, 129, 0.8));
         }
-        @keyframes confettiFall {
-            0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-120px) translateX(var(--rand-x)) scale(1.4) rotate(360deg); opacity: 0; }
+        @keyframes confettiFly {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.3) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: translate(var(--vx), var(--vy)) scale(1.3) rotate(180deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(calc(var(--vx) * 1.2), calc(var(--vy) + 150px)) scale(0.8) rotate(360deg);
+            }
         }
 
         .container {
@@ -205,19 +217,19 @@
             color: #0b0c10;
         }
 
-        /* CUSTOM HEART-SHAPED TEXT CONTAINER */
+        /* ELEGANT HEART-SHAPED LOVE LETTER CONTAINER */
         #puzzleMessage {
             display: none;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(15px);
             transition: opacity 1.5s ease, transform 1.5s ease;
             margin: 20px auto;
-            max-width: 420px;
-            background: rgba(11, 12, 16, 0.95);
-            border: 2px solid #ff2a85;
-            border-radius: 20px;
-            padding: 25px 20px;
-            box-shadow: 0 0 25px rgba(255, 42, 133, 0.3);
+            max-width: 440px;
+            background: radial-gradient(circle at center, rgba(31, 40, 51, 0.95), rgba(11, 12, 16, 0.98));
+            border: 2px solid #ff4081;
+            border-radius: 25px;
+            padding: 30px 20px;
+            box-shadow: 0 0 30px rgba(255, 64, 129, 0.35);
         }
         #puzzleMessage.show-win {
             display: block;
@@ -225,25 +237,25 @@
             transform: translateY(0);
         }
 
-        /* Heart Silhouette Typography Shaping */
+        /* Heart Typography Silhouette */
         .heart-shape-text {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.82em;
-            color: #ff2a85;
-            line-height: 1.6;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 42, 133, 0.5);
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.25em;
+            color: #ff4081;
+            line-height: 1.5;
+            font-weight: 700;
+            text-shadow: 0 0 12px rgba(255, 64, 129, 0.6);
             text-align: center;
         }
-        .line-1 { padding: 0 70px; }
-        .line-2 { padding: 0 40px; }
-        .line-3 { padding: 0 20px; }
-        .line-4 { padding: 0 10px; }
-        .line-5 { padding: 0 5px; }
+        .line-1 { padding: 0 65px; }
+        .line-2 { padding: 0 35px; }
+        .line-3 { padding: 0 15px; }
+        .line-4 { padding: 0 5px; }
+        .line-5 { padding: 0 0px; }
         .line-6 { padding: 0 15px; }
         .line-7 { padding: 0 35px; }
         .line-8 { padding: 0 60px; }
-        .line-9 { padding: 0 90px; }
+        .line-9 { padding: 0 85px; }
 
         /* HEART SHAPE COUNTDOWN BOX */
         .heart-countdown {
@@ -532,20 +544,32 @@
             initPuzzle();
         }
 
-        // CONFETTI BURST EFFECT
+        // INTENSE MULTI-DIRECTIONAL CONFETTI CANNON
         function triggerConfetti() {
-            const container = document.getElementById('cardContainer');
-            const icons = ['💞', '💝', '💖', '❤️', '✨'];
-            for (let i = 0; i < 25; i++) {
+            const icons = ['💞', '💝', '💖', '❤️', '✨', '🌸', '💓'];
+            const totalParticles = 45;
+
+            for (let i = 0; i < totalParticles; i++) {
                 const span = document.createElement('span');
                 span.className = 'confetti-heart';
                 span.innerHTML = icons[Math.floor(Math.random() * icons.length)];
-                span.style.left = Math.random() * 100 + '%';
-                span.style.top = '50%';
-                span.style.setProperty('--rand-x', (Math.random() * 200 - 100) + 'px');
-                span.style.animationDuration = (Math.random() * 1 + 1.5) + 's';
-                container.appendChild(span);
-                setTimeout(() => span.remove(), 2500);
+                
+                // Spawn position near center puzzle board
+                span.style.left = '50%';
+                span.style.top = '45%';
+
+                // Random velocity in x and y
+                const vx = (Math.random() * 350 - 175) + 'px';
+                const vy = -(Math.random() * 250 + 100) + 'px';
+                const duration = (Math.random() * 1.2 + 1.8) + 's';
+
+                span.style.setProperty('--vx', vx);
+                span.style.setProperty('--vy', vy);
+                span.style.setProperty('--duration', duration);
+                span.style.fontSize = (Math.random() * 18 + 18) + 'px';
+
+                document.body.appendChild(span);
+                setTimeout(() => span.remove(), 3000);
             }
         }
 
@@ -564,7 +588,7 @@
                     document.getElementById('photoFrame').classList.add('cinematic-fade');
                     document.getElementById('puzzleSection').classList.add('fade-out');
 
-                    // Show heart-shaped text contour
+                    // Show heart-shaped love letter
                     setTimeout(() => {
                         document.getElementById('puzzleMessage').classList.add('show-win');
                     }, 1200);
